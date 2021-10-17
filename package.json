@@ -1,6 +1,6 @@
 {
-    "name": "antitcb.dev",
-    "version": "0.0.1",
+    "name": "alexgravely.dev",
+    "version": "1.0.0",
     "scripts": {
         "dev": "svelte-kit dev",
         "build": "svelte-kit build",

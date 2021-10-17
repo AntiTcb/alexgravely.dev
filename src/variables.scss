@@ -2,14 +2,24 @@
 
 @mixin screen-size($size) {
     @if $size == phone {
-        @media (max-width: 599px) { @content; }
+        @media (max-width: 599px) {
+            @content;
+        }
     } @else if $size == tablet-portrait {
-        @media (min-width: 600px) { @content; }
+        @media (min-width: 600px) {
+            @content;
+        }
     } @else if $size == tablet-landscape {
-        @media (min-width: 900px) { @content; }
+        @media (min-width: 900px) {
+            @content;
+        }
     } @else if $size == desktop {
-        @media (min-width: 1200px) { @content; }
+        @media (min-width: 1200px) {
+            @content;
+        }
     } @else if $size == big-desktop {
-        @media (min-width: 1800px) { @content; }
+        @media (min-width: 1800px) {
+            @content;
+        }
     }
 }

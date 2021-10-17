@@ -1,6 +1,6 @@
 <script>
-    import Fa from 'svelte-fa'
-    import { faGithub } from '@fortawesome/free-brands-svg-icons'
+    import Fa from 'svelte-fa';
+    import { faGithub } from '@fortawesome/free-brands-svg-icons';
 </script>
 
 <section>

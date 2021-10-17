@@ -11,22 +11,22 @@ const config = {
             css: {
                 preprocessorOptions: {
                     scss: {
-                        additionalData: '@import "src/variables.scss";'
-                    }
-                }
+                        additionalData: '@import "src/variables.scss";',
+                    },
+                },
             },
             optimizeDeps: {
-                include: ["highlight.js/lib/core"],
-            }
-        }
+                include: ['highlight.js/lib/core'],
+            },
+        },
     },
     preprocess: [
         preprocess({
             scss: {
-                prependData: '@import "src/variables.scss";'
-            }
-        })
-    ]
+                prependData: '@import "src/variables.scss";',
+            },
+        }),
+    ],
 };
 
 export default config;

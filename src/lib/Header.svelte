@@ -65,7 +65,7 @@
             height: 100%;
 
             .link {
-                border-left: 1.5px solid var(--text-primary) ;
+                border-left: 1.5px solid var(--text-primary);
                 border-right: 1.5px solid var(--text-primary);
 
                 &:first-child {

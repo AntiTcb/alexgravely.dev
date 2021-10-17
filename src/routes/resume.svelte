@@ -1,16 +1,16 @@
 <script>
     import { onDestroy, onMount } from 'svelte';
-    import Fa from 'svelte-fa'
+    import Fa from 'svelte-fa';
     import { faPrint } from '@fortawesome/free-solid-svg-icons';
     import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
     import { DateTime } from 'luxon';
 
-    const startDate = DateTime.fromISO("2008-01-01");
+    const startDate = DateTime.fromISO('2008-01-01');
 
     $: timers = [];
     onMount(() => {
         const timeSince = setInterval(() => {
-            document.querySelector("#timeSince").innerHTML = getTimeSinceString();
+            document.querySelector('#timeSince').innerHTML = getTimeSinceString();
         }, 1000);
         timers.push(timeSince);
     });
@@ -20,17 +20,23 @@
     });
 
     function getTimeSinceString() {
-        const diff = DateTime.now().diff(startDate, ['years', 'months', 'days', 'hours', 'minutes', 'seconds']).toObject();
-        return `${diff.years} year(s), ${diff.months} month(s), ${diff.days} day(s), ${diff.hours} hour(s), ${diff.minutes} minute(s), and ${Math.floor(diff.seconds)} second(s).`;
+        const diff = DateTime.now()
+            .diff(startDate, ['years', 'months', 'days', 'hours', 'minutes', 'seconds'])
+            .toObject();
+        return `${diff.years} year(s), ${diff.months} month(s), ${diff.days} day(s), ${
+            diff.hours
+        } hour(s), ${diff.minutes} minute(s), and ${Math.floor(diff.seconds)} second(s).`;
     }
 </script>
-
 
 <svelte:head>
     <title>Resume | AlexGravely.Dev</title>
     <meta name="description" content="Resume of Alex Gravely" />
-    <meta name=”robots” content="index, nofollow">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.14.0/devicon.min.css">
+    <meta name="robots" content="index, nofollow" />
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.14.0/devicon.min.css"
+    />
 </svelte:head>
 
 <section id="resume">
@@ -40,17 +46,33 @@
             <h3>Full Stack Developer</h3>
             <hr />
             <div>
-                <a href="https://github.com/AntiTcb" rel="noreferrer" target="_blank" title="GitHub">
+                <a
+                    href="https://github.com/AntiTcb"
+                    rel="noreferrer"
+                    target="_blank"
+                    title="GitHub"
+                >
                     <Fa icon={faGithub} size="1.5x" />
                 </a>
-                <a href="https://www.linkedin.com/in/antitcb/" rel="noreferrer" target="_blank" title="LinkedIn">
+                <a
+                    href="https://www.linkedin.com/in/antitcb/"
+                    rel="noreferrer"
+                    target="_blank"
+                    title="LinkedIn"
+                >
                     <Fa icon={faLinkedin} size="1.5x" />
                 </a>
             </div>
             <p>
-                Critical thinker. Knack for debugging problems. Ambitious and eager to learn new things. Jack of all trades, able to template a website design, construct the backend, setup continuous deployment.
+                Critical thinker. Knack for debugging problems. Ambitious and eager to learn new
+                things. Jack of all trades, able to template a website design, construct the
+                backend, setup continuous deployment.
             </p>
-            <p id="programming_time">Professional, freelance, and hobby developer for (approximately) <span id="timeSince">...</span></p>
+            <p id="programming_time">
+                Professional, freelance, and hobby developer for (approximately) <span
+                    id="timeSince">...</span
+                >
+            </p>
         </article>
     </section>
     <section id="work">
@@ -59,30 +81,66 @@
             <div class="job">
                 <h3 class="title">Software Developer / Technical Support, Ziiva</h3>
                 <p class="duration">January 2018 - Present</p>
-                <p class="job_description">Ziiva provides SAAS through Prosperity, their Online Learning Management Platform, simplying the needs of managing training employees for enterprise corporations or selling online courses for people looking to start up an online business.</p>
+                <p class="job_description">
+                    Ziiva provides SAAS through Prosperity, their Online Learning Management
+                    Platform, simplying the needs of managing training employees for enterprise
+                    corporations or selling online courses for people looking to start up an online
+                    business.
+                </p>
                 <ul class="job_responsibilities">
-                    <li>Provided implementation, consultation, configuration, and technical support to existing customers on customizations to their site instance to meet their training, reporting, and ecommerce needs.</li>
-                    <li>Maintained multi-tenant ColdFusion application, using HTML/CSS/JS to handle client website branding, ColdFusion for functionality changes, server-side maintenance in IIS, and database management in MSSQL.</li>
-                    <li>Developed several internal tools with .NET for simplying large scriptable tasks needed for client implementation or modification.</li>
-                    <li>Provided technical support via phone and email whenever an issue with the site arose, identifiying problems through meticulous debugging, and seeing a fix through to the end, confirming issue is resolved through testing.</li>
+                    <li>
+                        Provided implementation, consultation, configuration, and technical support
+                        to existing customers on customizations to their site instance to meet their
+                        training, reporting, and ecommerce needs.
+                    </li>
+                    <li>
+                        Maintained multi-tenant ColdFusion application, using HTML/CSS/JS to handle
+                        client website branding, ColdFusion for functionality changes, server-side
+                        maintenance in IIS, and database management in MSSQL.
+                    </li>
+                    <li>
+                        Developed several internal tools with .NET for simplying large scriptable
+                        tasks needed for client implementation or modification.
+                    </li>
+                    <li>
+                        Provided technical support via phone and email whenever an issue with the
+                        site arose, identifiying problems through meticulous debugging, and seeing a
+                        fix through to the end, confirming issue is resolved through testing.
+                    </li>
                 </ul>
             </div>
             <div class="job">
                 <h3 class="title">Programming Associate, Star City Games</h3>
                 <p class="duration">October 2014 - March 2015</p>
-                <p class="job_description">Star City Games operates the largest Magic the Gathering ecommerce website.</p>
+                <p class="job_description">
+                    Star City Games operates the largest Magic the Gathering ecommerce website.
+                </p>
                 <ul class="job_responsibilities">
-                    <li>Self taught VB.NET and C# for development and reimplementation of internal applications necessary for day to day operations.</li>
+                    <li>
+                        Self taught VB.NET and C# for development and reimplementation of internal
+                        applications necessary for day to day operations.
+                    </li>
                     <li>Maintain internal card databases using MS Access and MySQL.</li>
                 </ul>
             </div>
             <div class="job">
                 <h3 class="title">Web Developer, Roanoke College (Work Study)</h3>
                 <p class="duration">May 2013 - September 2013</p>
-                <p class="job_description">Offered as a Work Study option, Roanoke College provides jobs in their IT department for students to get early experience in a corporate environment and cultivate their skills with hands on experience while earning their degrees.</p>
+                <p class="job_description">
+                    Offered as a Work Study option, Roanoke College provides jobs in their IT
+                    department for students to get early experience in a corporate environment and
+                    cultivate their skills with hands on experience while earning their degrees.
+                </p>
                 <ul class="job_responsibilities">
-                    <li>Learn and develop a full stack setup for intra-department campus activities; HTML, CSS, JavaScript for the frontend, ColdFusion for the serverside language, and MSSQL for the database.</li>
-                    <li>Assist with setup of new campus owned computers for student and faculty use by installing Windows and configuration for restricted use.</li>
+                    <li>
+                        Learn and develop a full stack setup for intra-department campus activities;
+                        HTML, CSS, JavaScript for the frontend, ColdFusion for the serverside
+                        language, and MSSQL for the database.
+                    </li>
+                    <li>
+                        Assist with setup of new campus owned computers for student and faculty use
+                        by installing Windows and configuration for restricted use.
+                    </li>
                 </ul>
             </div>
         </article>
@@ -93,95 +151,219 @@
             <h3>Languages</h3>
             <div>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" alt="C Sharp" title="C#" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg"
+                        alt="C Sharp"
+                        title="C#"
+                    />
                     <figcaption>C#</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://upload.wikimedia.org/wikipedia/commons/6/63/Adobe_ColdFusion_10_icon.png" alt="ColdFusion" title="ColdFusion">
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://upload.wikimedia.org/wikipedia/commons/6/63/Adobe_ColdFusion_10_icon.png"
+                        alt="ColdFusion"
+                        title="ColdFusion"
+                    />
                     <figcaption>ColdFusion</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" title="JavaScript" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                        alt="JavaScript"
+                        title="JavaScript"
+                    />
                     <figcaption>JavaScript</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original-wordmark.svg" alt="HTML" title="HTML" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original-wordmark.svg"
+                        alt="HTML"
+                        title="HTML"
+                    />
                     <figcaption>HTML</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-plain-wordmark.svg" alt="CSS" title="CSS" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-plain-wordmark.svg"
+                        alt="CSS"
+                        title="CSS"
+                    />
                     <figcaption>CSS</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain-wordmark.svg" alt="GraphQL" title="GraphQL" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain-wordmark.svg"
+                        alt="GraphQL"
+                        title="GraphQL"
+                    />
                     <figcaption>GraphQL</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg" alt="MySQL" title="MySQL" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg"
+                        alt="MySQL"
+                        title="MySQL"
+                    />
                     <figcaption>MySQL</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg" alt="PostgreSQL" title="PostgreSQL" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg"
+                        alt="PostgreSQL"
+                        title="PostgreSQL"
+                    />
                     <figcaption>PostgreSQL</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain-wordmark.svg" alt="MSSQL" title="MSSQL" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain-wordmark.svg"
+                        alt="MSSQL"
+                        title="MSSQL"
+                    />
                     <figcaption>MSSQL</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP" title="PHP" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg"
+                        alt="PHP"
+                        title="PHP"
+                    />
                     <figcaption>PHP</figcaption>
                 </figure>
-
             </div>
             <h3>Frameworks</h3>
             <div>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-original.svg" alt="WordPress" title="WordPress" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-original.svg"
+                        alt="WordPress"
+                        title="WordPress"
+                    />
                     <figcaption>WordPress</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg" alt="Dot Net Core" title=".NET Core" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg"
+                        alt="Dot Net Core"
+                        title=".NET Core"
+                    />
                     <figcaption>.NET Core</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original-wordmark.svg" alt="Git" title="git" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original-wordmark.svg"
+                        alt="Git"
+                        title="git"
+                    />
                     <figcaption>Git</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original-wordmark.svg" alt="jQuery" title="jQuery" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original-wordmark.svg"
+                        alt="jQuery"
+                        title="jQuery"
+                    />
                     <figcaption>jQuery</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg" alt="NGINX" title="NGINX" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg"
+                        alt="NGINX"
+                        title="NGINX"
+                    />
                     <figcaption>NGINX</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original-wordmark.svg" alt="React" title="React" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original-wordmark.svg"
+                        alt="React"
+                        title="React"
+                    />
                     <figcaption>React</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/svelte/svelte-original.svg" alt="Svelte" title="Svelte" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/svelte/svelte-original.svg"
+                        alt="Svelte"
+                        title="Svelte"
+                    />
                     <figcaption>Svelte</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/less/less-plain-wordmark.svg" alt="LESS" title="LESS" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/less/less-plain-wordmark.svg"
+                        alt="LESS"
+                        title="LESS"
+                    />
                     <figcaption>LESS</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg" alt="Sass/SCSS" title="SASS/SCSS" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg"
+                        alt="Sass/SCSS"
+                        title="SASS/SCSS"
+                    />
                     <figcaption>SASS/SCSS</figcaption>
                 </figure>
-
             </div>
             <h3>Systems</h3>
             <div>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/windows8/windows8-original.svg" alt="Windows" title="Windows" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/windows8/windows8-original.svg"
+                        alt="Windows"
+                        title="Windows"
+                    />
                     <figcaption>Windows</figcaption>
                 </figure>
                 <figure>
-                    <img width="75" height="75" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ubuntu/ubuntu-plain-wordmark.svg" alt="Ubuntu" title="Ubuntu" />
+                    <img
+                        width="75"
+                        height="75"
+                        src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ubuntu/ubuntu-plain-wordmark.svg"
+                        alt="Ubuntu"
+                        title="Ubuntu"
+                    />
                     <figcaption>Ubuntu</figcaption>
                 </figure>
             </div>
@@ -192,7 +374,10 @@
             <h2>Education</h2>
             <h3 class="title">Applied Computer Science, Roanoke College</h3>
             <p class="duration">August 2012 - September 2013</p>
-            <p>Course Work - Fundamentals of CS (Python), Data Structures and Algorithms, Computer Security, System Administration</p>
+            <p>
+                Course Work - Fundamentals of CS (Python), Data Structures and Algorithms, Computer
+                Security, System Administration
+            </p>
         </article>
     </section>
     <section id="interests">
@@ -205,20 +390,36 @@
                     <li>
                         <h4>YGOrganization / CardfightCoalition</h4>
                         <ul>
-                            <li>Sole maintainer for trading card game niche WordPress sites, managing upkeep of front-end design and server-side stability, using HTML, CSS, JavaScript, PHP, MySQL, NGINX, and Ubuntu.</li>
+                            <li>
+                                Sole maintainer for trading card game niche WordPress sites,
+                                managing upkeep of front-end design and server-side stability, using
+                                HTML, CSS, JavaScript, PHP, MySQL, NGINX, and Ubuntu.
+                            </li>
                         </ul>
                     </li>
                     <li>
                         <h4>DragonForce / Herman Li</h4>
                         <ul>
-                            <li>Sole maintainer for WordPress site for the metal band DragonForce and the personal website of bassist Herman Li. Managing upkeep of front-end design and server-side stability, using HTML, CSS, JavaScript, PHP, MySQL, NGINX, and Ubuntu.</li>
+                            <li>
+                                Sole maintainer for WordPress site for the metal band DragonForce
+                                and the personal website of bassist Herman Li. Managing upkeep of
+                                front-end design and server-side stability, using HTML, CSS,
+                                JavaScript, PHP, MySQL, NGINX, and Ubuntu.
+                            </li>
                         </ul>
                     </li>
                     <li>
                         <h4>HeroSync</h4>
                         <ul>
-                            <li>Maintainer of React front-end website, powered by a headless WordPress installation.</li>
-                            <li>Assist in development of game, contributing to the Unity game engine implementation, and providing ASP.NET Core API applications for internal usage.</li>
+                            <li>
+                                Maintainer of React front-end website, powered by a headless
+                                WordPress installation.
+                            </li>
+                            <li>
+                                Assist in development of game, contributing to the Unity game engine
+                                implementation, and providing ASP.NET Core API applications for
+                                internal usage.
+                            </li>
                         </ul>
                     </li>
                     <li>
@@ -236,21 +437,32 @@
                     <li>
                         <h4>Discord Bot Developer, Discord.NET</h4>
                         <ul>
-                            <li>Developer of four Discord Bot Applications written in C# to aid in community engagement for Yu-Gi-Oh, RuneScape, World of Warcraft, and webhook management for the YGOrganization/Cardfight Coalition websites.</li>
-                            <li>Contributor and repository assistant manager for the Discord.NET library, a C# wrapper for the Discord chat application's API.</li>
+                            <li>
+                                Developer of four Discord Bot Applications written in C# to aid in
+                                community engagement for Yu-Gi-Oh, RuneScape, World of Warcraft, and
+                                webhook management for the YGOrganization/Cardfight Coalition
+                                websites.
+                            </li>
+                            <li>
+                                Contributor and repository assistant manager for the Discord.NET
+                                library, a C# wrapper for the Discord chat application's API.
+                            </li>
                         </ul>
                     </li>
                     <li>
                         <h4>CFDocs</h4>
                         <ul>
-                            <li>Provided several contributions to CFDocs, a hosted documentation site for the ColdFusion language.</li>
+                            <li>
+                                Provided several contributions to CFDocs, a hosted documentation
+                                site for the ColdFusion language.
+                            </li>
                         </ul>
                     </li>
                 </ul>
             </div>
         </article>
     </section>
-    <div id="printMe" on:click="{() => window.print()}" title="Print">
+    <div id="printMe" on:click={() => window.print()} title="Print">
         <Fa icon={faPrint} />
     </div>
 </section>
@@ -277,7 +489,7 @@
         font-size: 0.75rem;
         color: var(--text-secondary);
     }
-    figcaption{
+    figcaption {
         display: none;
     }
     .job_description {
@@ -383,12 +595,12 @@
                     font-size: 12pt;
 
                     &::after {
-                        content: ", ";
+                        content: ', ';
                         padding-right: 5px;
                     }
                 }
                 &:last-of-type figcaption::after {
-                    content: "";
+                    content: '';
                 }
             }
         }
