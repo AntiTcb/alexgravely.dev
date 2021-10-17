@@ -1,0 +1,33 @@
+/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
+
+@import "reseter.css";
+@import url('https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&display=swap');
+
+:root {
+    --text-primary: #48c848;
+    --text-secondary: lightgreen;
+    --bg-primary: rgb(0, 0, 0);
+    --bg-secondary: rgb(50, 50, 50);
+    --transition-speed: 500ms;
+}
+
+html, root {
+    font-size: 16pt;
+    font-family: 'Fira Mono', monospace;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-secondary);
+    text-shadow: 5px 3px 5px black;
+    color: var(--text-primary);
+}
+
+h1, h2, h3, h4, h5 h6 {
+    font-variant: small-caps;
+}
+
+a {
+    color: var(--text-primary);
+}
