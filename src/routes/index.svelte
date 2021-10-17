@@ -48,7 +48,7 @@
             if (/https?:\/\//.test(s.innerHTML)) {
                 s.innerHTML = `<a href=${s.innerHTML} target="_blank" rel="noreferrer">${s.innerHTML}</a>`;
             } else if (/gmail.com/.test(s.innerHTML))
-                s.innerHTML = `<a href='mailto:${s.innerHTML}' target="_blank" rel="noreferrer">${s.innerHTML}</a>`;
+                s.innerHTML = `<a href='mailto:${s.innerHTML.replace('"', '')}' target="_blank" rel="noreferrer">${s.innerHTML}</a>`;
         });
     });
 </script>
