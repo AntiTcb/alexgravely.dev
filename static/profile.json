@@ -1,0 +1,33 @@
+{
+    "name": "Alex Gravely",
+    "description": "Freelance and Professional Full-Stack Developer",
+    "age": 27,
+    "location": "Roanoke, VA",
+    "portfolio": [
+        "https://ygorganization.com",
+        "https://cardfightcoalition.com",
+        "https://dragonforce.com",
+        "https://loudonavenuecc.org",
+        "https://herosync.com"
+    ],
+    "contact_info": {
+        "email": "antitcb@gmail.com",
+        "discord": "AntiTcb#0001",
+        "github": "https://github.com/AntiTcb",
+        "linkedIn": "https://www.linkedin.com/in/antitcb/"
+    },
+    "trivia": {
+        "favourites": {
+            "animal": "Penguin",
+            "anime": ["Seven Deadly Sins", "Attack on Titan", "Dragon Ball", "Soul Eater", "Death Note"],
+            "car": "Chevrolet Volt",
+            "shows": ["Bojack Horseman", "Avatar the Last Airbender", "Supernatural", "The Umbrella Academy", "The Good Place", "Parks & Recreation", "The Office"],
+            "editor": "Visual Studio Code",
+            "food": "Filet mignon, medium rare",
+            "restaurant": "Chick-Fil-A",
+            "tea": "Constant Comment by Bigelow",
+            "video_games": ["World of Warcraft", "League of Legends", "Old School RuneScape", "Team Fortress 2"]
+        },
+        "dislikes": ["PHP", "Using tab as your indentation", "VIM", "Tomatoes"]
+    }
+}
