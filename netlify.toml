@@ -1,4 +1,8 @@
 [build]
   command = "npm run build"
   publish = "build"
-  environment = { NODE_VERSION = "16.1.0" }
+  environment = { NODE_VERSION = "14.18.1" }
+[dev]
+  command = "svelte-kit dev"
+[functions]
+  node_bundler = "esbuild"
