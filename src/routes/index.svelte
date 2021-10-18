@@ -36,5 +36,6 @@
         font-size: clamp(0.75rem, -0.85rem + 8.333vw, 0.95rem);
         overflow-x: hidden;
         white-space: break-spaces;
+        border-radius: 0.5rem;
     }
 </style>
