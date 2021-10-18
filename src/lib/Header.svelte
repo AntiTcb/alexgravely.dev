@@ -3,7 +3,6 @@
         <span class="link"><a href="/">AlexGravely.Dev</a></span>
     </span>
     <span class="menu">
-        <span class="link mobile-only"><a href="/">AlexGravely.Dev</a></span>
         <span class="link"><a href="/resume">Résumé</a></span>
     </span>
 </nav>
@@ -24,7 +23,7 @@
 
         span {
             padding: calc(1rem / 10) 0.5rem;
-            font-size: clamp(0.5rem, -0.85rem + 8.333vw, 0.85rem);
+            font-size: clamp(0.7rem, -0.85rem + 8.333vw, 0.9rem);
 
             a {
                 color: var(--text-primary);
@@ -54,7 +53,11 @@
             }
 
             @include screen-size(phone) {
-                display: none;
+                padding: 0;
+                .link {
+                    font-size: inherit;
+                    border-right: 1.5px solid var(--text-primary);
+                }
             }
         }
         .menu {

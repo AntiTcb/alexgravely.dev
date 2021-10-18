@@ -9,9 +9,13 @@
     <slot />
 </main>
 
-<style>
+<style lang="scss">
     main {
         width: 100%;
         padding: 1rem;
+
+        @include screen-size(phone) {
+            padding: 0.5rem;
+        }
     }
 </style>
