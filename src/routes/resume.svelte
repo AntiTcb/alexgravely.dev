@@ -34,7 +34,8 @@
     <meta name="description" content="Resume of Alex Gravely" />
     <meta name="robots" content="index, nofollow" />
     <link
-        rel="stylesheet"
+        rel="preload"
+        as="style"
         href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.14.0/devicon.min.css"
     />
 </svelte:head>
