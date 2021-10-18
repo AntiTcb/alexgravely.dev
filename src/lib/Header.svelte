@@ -3,7 +3,7 @@
         <span class="link"><a href="/">AlexGravely.Dev</a></span>
     </span>
     <span class="menu">
-        <span class="link mobile-only"><a href="/">Home</a></span>
+        <span class="link mobile-only"><a href="/">AlexGravely.Dev</a></span>
         <span class="link"><a href="/resume">Résumé</a></span>
     </span>
 </nav>
@@ -48,7 +48,7 @@
         }
 
         .brand {
-            text-transform: uppercase;
+            text-transform: capitalize;
             .link {
                 font-size: 1.25rem;
             }
