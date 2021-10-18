@@ -29,3 +29,12 @@
         <Highlight language={json} code={JSON.stringify(profile, null, '    ')} />
     </article>
 </section>
+
+<style>
+    :global(pre[data-language="json"]) {
+        word-wrap: break-word;
+        font-size: clamp(0.5rem, -0.85rem + 8.333vw, 1rem);
+        overflow-x: hidden;
+        white-space: break-spaces;
+    }
+</style>
