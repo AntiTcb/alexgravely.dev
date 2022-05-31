@@ -1,7 +1,10 @@
 <script>
     import '../app.scss';
     import Header from '$lib/Header.svelte';
+    import Analytics from '$lib/Analytics.svelte';
 </script>
+
+<Analytics />
 
 <Header />
 
