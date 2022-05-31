@@ -80,8 +80,16 @@
         <article>
             <h2>Work Experience</h2>
             <div class="job">
+                <h3 class="title">Software Developer, Professional Rehabilitative Options, INC.</h3>
+                <p class="duration">January 2022 - Present</p>
+                <p class="job_description">PRO INC. provides MEdical Case Manager solutions, maintaining efficient and effective oversight on workplace injuries.</p>
+                <ul class="job_responsibilities">
+                    <li>Maintain and develop the company's internal web application for Field Case Management.</li>
+                </ul>
+            </div>
+            <div class="job">
                 <h3 class="title">Software Developer / Technical Support, Ziiva</h3>
-                <p class="duration">January 2018 - Present</p>
+                <p class="duration">January 2018 - January 2022</p>
                 <p class="job_description">
                     Ziiva provides SAAS through Prosperity, their Online Learning Management
                     Platform, simplying the needs of managing training employees for enterprise
