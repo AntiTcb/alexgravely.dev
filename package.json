@@ -12,21 +12,21 @@
         "@sveltejs/adapter-auto": "1.0.0-next.53",
         "@sveltejs/kit": "next",
         "eslint": "^7.32.0",
-        "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-svelte3": "^3.4.0",
-        "prettier": "^2.5.1",
-        "prettier-plugin-svelte": "^2.6.0",
-        "sass": "^1.49.7",
-        "svelte": "^3.46.4",
-        "svelte-highlight": "^5.2.0",
-        "svelte-preprocess": "^4.10.2"
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-svelte3": "^3.4.1",
+        "prettier": "^2.7.1",
+        "prettier-plugin-svelte": "^2.7.0",
+        "sass": "^1.53.0",
+        "svelte": "^3.48.0",
+        "svelte-highlight": "^5.3.2",
+        "svelte-preprocess": "^4.10.7"
     },
     "type": "module",
     "dependencies": {
         "@fortawesome/free-brands-svg-icons": "^5.15.4",
         "@fortawesome/free-solid-svg-icons": "^5.15.4",
-        "highlight.js": "^11.4.0",
-        "luxon": "^2.3.0",
+        "highlight.js": "^11.5.1",
+        "luxon": "^2.4.0",
         "reseter.css": "^2.0.0",
         "svelte-fa": "^2.4.0"
     }
