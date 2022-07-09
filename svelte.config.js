@@ -6,18 +6,6 @@ const config = {
     kit: {
         // hydrate the <div id="svelte"> element in src/app.html
         adapter: adapter(),
-        vite: {
-            css: {
-                preprocessorOptions: {
-                    scss: {
-                        additionalData: '@import "src/variables.scss";',
-                    },
-                },
-            },
-            optimizeDeps: {
-                include: ['highlight.js/lib/core'],
-            },
-        },
     },
     preprocess: [
         preprocess({
