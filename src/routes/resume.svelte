@@ -1,9 +1,9 @@
 <script>
+    import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
+    import { faPrint } from '@fortawesome/free-solid-svg-icons';
+    import { DateTime } from 'luxon';
     import { onDestroy, onMount } from 'svelte';
     import Fa from 'svelte-fa';
-    import { faPrint } from '@fortawesome/free-solid-svg-icons';
-    import { faGithub, faLinkedin } from '@fortawesome/free-brands-svg-icons';
-    import { DateTime } from 'luxon';
 
     const startDate = DateTime.fromISO('2008-01-01');
 
@@ -82,9 +82,15 @@
             <div class="job">
                 <h3 class="title">Software Developer, Professional Rehabilitative Options, INC.</h3>
                 <p class="duration">January 2022 - Present</p>
-                <p class="job_description">PRO INC. provides MEdical Case Manager solutions, maintaining efficient and effective oversight on workplace injuries.</p>
+                <p class="job_description">
+                    PRO INC. provides Medical Case Manager solutions, maintaining efficient and
+                    effective oversight on workplace injuries.
+                </p>
                 <ul class="job_responsibilities">
-                    <li>Maintain and develop the company's internal web application for Field Case Management.</li>
+                    <li>
+                        Maintain and develop the company's internal web application for Field Case
+                        Management, using NET Core, Svelte, SQL Server, and Azure.
+                    </li>
                 </ul>
             </div>
             <div class="job">
@@ -382,7 +388,7 @@
         <article>
             <h2>Education</h2>
             <h3 class="title">Applied Computer Science, Roanoke College</h3>
-            <p class="duration">August 2012 - September 2013</p>
+            <p class="duration">August 2012 - September 2013 (incomplete)</p>
             <p>
                 Course Work - Fundamentals of CS (Python), Data Structures and Algorithms, Computer
                 Security, System Administration
@@ -397,12 +403,21 @@
                 <p class="duration">July 2013 - Present</p>
                 <ul class="job_responsibilities">
                     <li>
-                        <h4>YGOrganization / CardfightCoalition</h4>
+                        <h4>YGOrganization</h4>
                         <ul>
                             <li>
-                                Sole maintainer for trading card game niche WordPress sites,
-                                managing upkeep of front-end design and server-side stability, using
-                                HTML, CSS, JavaScript, PHP, MySQL, NGINX, and Ubuntu.
+                                Maintainer for trading card game niche WordPress sites, managing
+                                upkeep of front-end design and server-side stability, using HTML,
+                                CSS, JavaScript, PHP, MySQL, NGINX, and Ubuntu.
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h4>Yugipedia</h4>
+                        <ul>
+                            <li>
+                                Maintainer for the Yu-Gi-Oh! wiki, managing server-side stability,
+                                using PHP, MySQL, NGINX, and Ubuntu.
                             </li>
                         </ul>
                     </li>
@@ -410,10 +425,10 @@
                         <h4>DragonForce / Herman Li</h4>
                         <ul>
                             <li>
-                                Sole maintainer for WordPress site for the metal band DragonForce
-                                and the personal website of bassist Herman Li. Managing upkeep of
-                                front-end design and server-side stability, using HTML, CSS,
-                                JavaScript, PHP, MySQL, NGINX, and Ubuntu.
+                                Maintainer for WordPress site for the metal band DragonForce and the
+                                personal website of bassist Herman Li. Managing upkeep of front-end
+                                design and server-side stability, using HTML, CSS, JavaScript, PHP,
+                                MySQL, NGINX, and Ubuntu.
                             </li>
                         </ul>
                     </li>
