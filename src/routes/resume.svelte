@@ -65,9 +65,9 @@
                 </a>
             </div>
             <p>
-                Critical thinker. Knack for debugging problems. Ambitious and eager to learn new
-                things. Jack of all trades, able to template a website design, construct the
-                backend, setup continuous deployment.
+                Critical thinker with a knack for debugging problems. Ambitious and eager to learn
+                new things. Jack of all trades, able to template a website design, construct the
+                backend, and set up continuous deployment.
             </p>
             <p id="programming_time">
                 Professional, freelance, and hobby developer for (approximately) <span
@@ -98,7 +98,7 @@
                 <p class="duration">January 2018 - January 2022</p>
                 <p class="job_description">
                     Ziiva provides SAAS through Prosperity, their Online Learning Management
-                    Platform, simplying the needs of managing training employees for enterprise
+                    Platform, simplifying the needs of managing training employees for enterprise
                     corporations or selling online courses for people looking to start up an online
                     business.
                 </p>
@@ -114,13 +114,13 @@
                         maintenance in IIS, and database management in MSSQL.
                     </li>
                     <li>
-                        Developed several internal tools with .NET for simplying large scriptable
+                        Developed several internal tools with .NET for simplifying large scriptable
                         tasks needed for client implementation or modification.
                     </li>
                     <li>
                         Provided technical support via phone and email whenever an issue with the
-                        site arose, identifiying problems through meticulous debugging, and seeing a
-                        fix through to the end, confirming issue is resolved through testing.
+                        site arose, identifying problems through meticulous debugging, and seeing a
+                        fix through to the end, confirming the issue was resolved through testing.
                     </li>
                 </ul>
             </div>
@@ -148,13 +148,13 @@
                 </p>
                 <ul class="job_responsibilities">
                     <li>
-                        Learn and develop a full stack setup for intra-department campus activities;
-                        HTML, CSS, JavaScript for the frontend, ColdFusion for the serverside
-                        language, and MSSQL for the database.
+                        Learned and developed a full stack setup for intra-department campus
+                        activities; HTML, CSS, JavaScript for the frontend, ColdFusion for the
+                        server-side language, and MSSQL for the database.
                     </li>
                     <li>
-                        Assist with setup of new campus owned computers for student and faculty use
-                        by installing Windows and configuration for restricted use.
+                        Assisted with setup of new campus-owned computers for student and faculty
+                        use by installing Windows and configuring for restricted use.
                     </li>
                 </ul>
             </div>
@@ -426,9 +426,9 @@
                         <ul>
                             <li>
                                 Maintainer for WordPress site for the metal band DragonForce and the
-                                personal website of bassist Herman Li. Managing upkeep of front-end
-                                design and server-side stability, using HTML, CSS, JavaScript, PHP,
-                                MySQL, NGINX, and Ubuntu.
+                                personal website of guitarist Herman Li. Managing upkeep of
+                                front-end design and server-side stability, using HTML, CSS,
+                                JavaScript, PHP, MySQL, NGINX, and Ubuntu.
                             </li>
                         </ul>
                     </li>
@@ -450,6 +450,35 @@
                         <h4>Loudon Avenue Christian Church</h4>
                         <ul>
                             <li>Sole maintainer of WordPress site for a local church.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="interest">
+                <h3 class="title">TCG Judging</h3>
+                <p class="duration">July 2012 - Present</p>
+                <ul class="job_responsibilities">
+                    <li>
+                        <h4>Yu-Gi-Oh! TCG</h4>
+                        <ul>
+                            <li>
+                                RC-1, RC-2, PC-1, and DC-1 certified Judge for the Yu-Gi-Oh! Trading
+                                Card Game since July 2012.
+                                <a
+                                    href="https://docs.google.com/spreadsheets/d/1MDqwCQhULFx0_G5jBW2hy81xULWZFAPD-2ZsjHx1-vM/edit?gid=0#gid=0"
+                                    target="_blank"
+                                    rel="noreferrer">Full judging history spreadsheet</a
+                                >
+                            </li>
+                            <li>
+                                Led various teams of judges focusing on floor control, deck
+                                integrity, livestream broadcast, and other aspects of the
+                                tournament.
+                            </li>
+                            <li>
+                                Have written custom software to aid in judging processes to
+                                streamline workflows and improve productivity.
+                            </li>
                         </ul>
                     </li>
                 </ul>
