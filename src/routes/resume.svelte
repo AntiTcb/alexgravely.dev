@@ -481,6 +481,12 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <h4>Riftbound</h4>
+                        <ul>
+                            <li>Level 1 Certified Riftbound Judge since December 2025.</li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <div class="interest">
