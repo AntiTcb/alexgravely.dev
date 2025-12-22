@@ -625,6 +625,7 @@
             color: black !important;
             background-color: white !important;
             text-shadow: none;
+            font-family: serif;
         }
         a {
             &::after {
