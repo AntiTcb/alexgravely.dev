@@ -1,34 +1,71 @@
 {
-    "name": "Alex Gravely",
+    "age": 31,
+    "contact_info": {
+        "discord": "AntiTcb#0001",
+        "email": "antitcb@gmail.com",
+        "github": "https://github.com/AntiTcb",
+        "linkedIn": "https://www.linkedin.com/in/antitcb/"
+    },
     "description": "Freelance and Professional Full-Stack Developer",
-    "age": 27,
     "location": "Roanoke, VA",
+    "name": "Alex Gravely",
     "portfolio": [
         "https://ygorganization.com",
-        "https://cardfightcoalition.com",
+        "https://yugipedia.com",
+        "https://genesysformat.com",
         "https://dragonforce.com",
         "https://loudonavenuecc.org",
         "https://herosync.com"
     ],
-    "contact_info": {
-        "email": "antitcb@gmail.com",
-        "discord": "AntiTcb#0001",
-        "github": "https://github.com/AntiTcb",
-        "linkedIn": "https://www.linkedin.com/in/antitcb/"
-    },
     "trivia": {
+        "dislikes": [
+            "PHP",
+            "Using tab as your indentation",
+            "VIM",
+            "Tomatoes"
+        ],
         "favourites": {
             "animal": "Penguin",
-            "anime": ["Seven Deadly Sins", "Attack on Titan", "Dragon Ball", "Soul Eater", "Death Note"],
-            "car": "Chevrolet Volt",
-            "shows": ["Bojack Horseman", "Avatar the Last Airbender", "Supernatural", "The Umbrella Academy", "The Good Place", "Parks & Recreation", "The Office"],
-            "editor": "Visual Studio Code",
+            "anime": [
+                "Seven Deadly Sins",
+                "Attack on Titan",
+                "Dragon Ball",
+                "Soul Eater",
+                "Death Note",
+                "Jujustu Kaisen",
+                "Chainsaw Man",
+                "Demon Slayer",
+                "Spy x Family",
+                "Naruto",
+                "One Punch Man",
+                "My Hero Academia"
+            ],
+            "car": "2017 Chevrolet Volt",
+            "editor": "Cursor",
             "food": "Filet mignon, medium rare",
-            "movies": ["Spider-Man: Into the Spider-Verse", "Spider-Man: No Way Home", "Dragon Ball Super: Broly"],
+            "movies": [
+                "Spider-Man: Into the Spider-Verse",
+                "Spider-Man: No Way Home",
+                "Dragon Ball Super: Broly"
+            ],
             "restaurant": "Chick-Fil-A",
+            "shows": [
+                "Bojack Horseman",
+                "Avatar the Last Airbender",
+                "Supernatural",
+                "The Umbrella Academy",
+                "The Good Place",
+                "Parks & Recreation",
+                "The Office",
+                "Community"
+            ],
             "tea": "Constant Comment by Bigelow",
-            "video_games": ["World of Warcraft", "League of Legends", "Old School RuneScape", "Team Fortress 2"]
-        },
-        "dislikes": ["PHP", "Using tab as your indentation", "VIM", "Tomatoes"]
+            "video_games": [
+                "World of Warcraft",
+                "League of Legends",
+                "Old School RuneScape",
+                "Team Fortress 2"
+            ]
+        }
     }
 }
