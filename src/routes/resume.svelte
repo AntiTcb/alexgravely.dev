@@ -403,17 +403,16 @@
                 <p class="duration">July 2013 - Present</p>
                 <ul class="job_responsibilities">
                     <li>
-                        <h4>YGOrganization</h4>
+                        <h4><a href="https://ygorganization.com" target="_blank">YGOrganization</a></h4>
                         <ul>
                             <li>
-                                Maintainer for trading card game niche WordPress sites, managing
-                                upkeep of front-end design and server-side stability, using HTML,
-                                CSS, JavaScript, PHP, MySQL, NGINX, and Ubuntu.
+                                Full stack developer for trading card game niche WordPress site, managing
+                                upkeep of front-end design and server-side stability, using WordPress, Svelte, PHP, MySQL, NGINX, and Ubuntu.
                             </li>
                         </ul>
                     </li>
                     <li>
-                        <h4>Yugipedia</h4>
+                        <h4><a href="https://yugipedia.com" target="_blank">Yugipedia</a></h4>
                         <ul>
                             <li>
                                 Maintainer for the Yu-Gi-Oh! wiki, managing server-side stability,
@@ -422,7 +421,14 @@
                         </ul>
                     </li>
                     <li>
-                        <h4>DragonForce / Herman Li</h4>
+                        <h4><a href="https://yugitube.com" target="_blank"></a>YugiTube</a> / <a href="https://rifttube.com" target="_blank">RiftTube</a></h4>
+                        <ul>
+                            <li>Developer of YouTube index websites for Yu-Gi-Oh! and Riftbound, built with SvelteKit and Cloudflare.</li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <h4><a href="https://dragonforce.com" target="_blank">DragonForce</a> / <a href="https://hermanli.com" target="_blank">Herman Li</a></h4>
                         <ul>
                             <li>
                                 Maintainer for WordPress site for the metal band DragonForce and the
@@ -433,7 +439,7 @@
                         </ul>
                     </li>
                     <li>
-                        <h4>HeroSync</h4>
+                        <h4><a href="https://herosync.com" target="_blank">HeroSync</a></h4>
                         <ul>
                             <li>
                                 Maintainer of React front-end website, powered by a headless
@@ -447,7 +453,7 @@
                         </ul>
                     </li>
                     <li>
-                        <h4>Loudon Avenue Christian Church</h4>
+                        <h4><a href="https://loudonavenuecc.org" target="_blank">Loudon Avenue Christian Church</a></h4>
                         <ul>
                             <li>Sole maintainer of WordPress site for a local church.</li>
                         </ul>
