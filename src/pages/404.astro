@@ -1,0 +1,23 @@
+---
+import Base from "../layouts/Base.astro";
+
+Astro.response.status = 404;
+---
+
+<Base title="Not found" robots="noindex">
+	<article>
+		<h1>404</h1>
+		<p>That page doesn't exist. <a href="/">Go home</a>.</p>
+	</article>
+</Base>
+
+<style>
+	article {
+		max-width: 40rem;
+		margin: 2rem auto;
+		font-size: 0.8rem;
+	}
+	h1 {
+		margin-bottom: 0.5rem;
+	}
+</style>

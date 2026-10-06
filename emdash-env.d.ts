@@ -77,6 +77,20 @@ export interface OpenSource {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
+export interface Page {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  intro?: PortableTextBlock[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 export interface Portfolio {
   id: string;
   slug: string | null;
@@ -91,6 +105,22 @@ export interface Portfolio {
   show_on_resume?: boolean;
   sort_order?: number;
   writeup?: PortableTextBlock[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface Post {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  excerpt?: string;
+  featured_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown>; darkVariant?: { id: string; src?: string; alt?: string; width?: number; height?: number; filename?: string; mimeType?: string; blurhash?: string; dominantColor?: string; focalX?: number; focalY?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> } };
+  content?: PortableTextBlock[];
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -126,6 +156,22 @@ export interface Profile {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
+export interface Service {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  summary: string;
+  details?: PortableTextBlock[];
+  sort_order?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 export interface Skill {
   id: string;
   slug: string | null;
@@ -148,8 +194,11 @@ declare module "emdash" {
     education: Education;
     jobs: Job;
     open_source: OpenSource;
+    pages: Page;
     portfolio: Portfolio;
+    posts: Post;
     profile: Profile;
+    services: Service;
     skills: Skill;
   }
 }

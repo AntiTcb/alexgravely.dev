@@ -1,0 +1,74 @@
+---
+import { decodeSlug, getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+
+const slug = decodeSlug(Astro.params.slug);
+const { entry: site } = slug ? await getEmDashEntry("portfolio", slug) : { entry: null };
+if (!site) return Astro.rewrite("/404");
+const d = site.data;
+---
+
+<Base
+	title={d.name}
+	description={d.summary ?? `${d.name}, a project by Alex Gravely.`}
+	content={{ collection: "portfolio", id: d.id, slug: d.slug }}
+	pageType="article"
+>
+	<article class="page">
+		<p class="back"><a href="/projects">&larr; All projects</a></p>
+		<h1 {...site.edit.name}>{d.name}</h1>
+		{d.role && <p class="muted role" {...site.edit.role}>{d.role}</p>}
+		<p class="visit">
+			<a href={d.url} target="_blank" rel="noreferrer">{d.url.replace(/^https?:\/\//, "")}</a>
+		</p>
+		{d.summary && <p class="summary" {...site.edit.summary}>{d.summary}</p>}
+		{
+			d.tech && d.tech.length > 0 && (
+				<ul class="chips" aria-label="Tech used">
+					{d.tech.map((t) => (
+						<li>{t.name}</li>
+					))}
+				</ul>
+			)
+		}
+		{
+			d.writeup && d.writeup.length > 0 ? (
+				<div class="prose" {...site.edit.writeup}>
+					<PortableText value={d.writeup} />
+				</div>
+			) : (
+				d.highlights &&
+				d.highlights.length > 0 && (
+					<ul class="highlights">
+						{d.highlights.map((h) => (
+							<li>{h.text}</li>
+						))}
+					</ul>
+				)
+			)
+		}
+	</article>
+</Base>
+
+<style>
+	article > * + * {
+		margin-top: 0.6rem;
+	}
+	.back,
+	.visit,
+	.role {
+		font-size: 0.7rem;
+	}
+	.summary {
+		font-size: 0.85rem;
+	}
+	.highlights {
+		font-size: 0.8rem;
+		list-style: disc;
+		padding-left: 1.25rem;
+	}
+	.highlights li + li {
+		margin-top: 0.4rem;
+	}
+</style>

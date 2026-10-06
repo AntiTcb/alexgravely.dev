@@ -21,11 +21,11 @@ pnpm dev
 
 Local D1 and R2 data live in `.wrangler/` and are not committed.
 
-For the invoice pages, also:
+For the invoice and contact pages, also:
 
 ```bash
 cp .dev.vars.example .dev.vars   # then fill in Stripe test and PayPal sandbox credentials
-pnpm db:migrate:local            # creates the invoice tables
+pnpm db:migrate:local            # creates the invoice and contact tables
 ```
 
 ### Loading the seed content locally
@@ -34,7 +34,22 @@ On a fresh local database, the dev server creates the collections from `seed/see
 
 ## Content
 
-Everything on the site comes from EmDash collections: `profile` (one entry, slug `main`), `jobs`, `skills`, `education`, `portfolio`, `certifications`, and `open_source`. Read them through the helpers in `src/lib/content.ts`. Use `getPortfolio()` for every portfolio list so new entries appear everywhere.
+Everything on the site comes from EmDash collections: `profile` (one entry, slug `main`), `jobs`, `skills`, `education`, `portfolio`, `certifications`, `open_source`, `services`, `posts` (the blog), and `pages` (titles and intro text for the projects, services, contact and blog pages). The header links are the EmDash menu `primary`. Read them through the helpers in `src/lib/content.ts`. Use `getPortfolio()` for every portfolio list so new entries appear everywhere.
+
+## Pages
+
+| Route | Content |
+|---|---|
+| `/` | Profile as highlighted JSON |
+| `/resume` | Résumé, with print styles |
+| `/projects`, `/projects/[slug]` | `portfolio` collection |
+| `/services` | `services` collection |
+| `/contact` | Contact form: `/api/contact` saves to D1 (`contact_messages`) and emails `NOTIFY_EMAIL` |
+| `/blog`, `/blog/[slug]` | `posts` collection |
+
+To remove a page: take it out of the `primary` menu in the admin, then delete its file under `src/pages/`.
+
+The contact form uses a hidden honeypot field against spam. For stronger protection, create a Cloudflare Turnstile widget, set `TURNSTILE_SITE_KEY` in `wrangler.jsonc`, and add `TURNSTILE_SECRET_KEY` as a secret.
 
 ## Invoices and payments
 
@@ -71,7 +86,7 @@ Site components can be Astro or Svelte 5 (`.svelte`, in `src/components/`). Reac
 | `pnpm dev` | Dev server, using local D1 and R2 through Wrangler |
 | `pnpm build` | Production build into `dist/` |
 | `pnpm typecheck` | `astro check` |
-| `pnpm db:migrate:local` / `db:migrate:remote` | Apply invoice-table migrations to local / production D1 |
+| `pnpm db:migrate:local` / `db:migrate:remote` | Apply D1 migrations (invoices, contact messages) to local / production D1 |
 | `pnpm cf-typegen` | Regenerates `worker-configuration.d.ts` after `wrangler.jsonc` changes |
 | `pnpm deploy` | Build and `wrangler deploy` |
 
@@ -87,7 +102,9 @@ Site components can be Astro or Svelte 5 (`.svelte`, in `src/components/`). Reac
 | `src/lib/content.ts` | Content query helpers |
 | `src/lib/invoices/` | Invoice storage, Stripe, PayPal, email |
 | `src/lib/admin.ts` | EmDash-login gate for `/admin/*` pages |
-| `migrations/` | D1 migrations for the invoice tables |
+| `migrations/` | D1 migrations for the invoice and contact-message tables |
+| `src/lib/email.ts` | Shared email sender (Cloudflare Email Sending) |
+| `src/lib/contact.ts` | Contact form validation, storage, Turnstile |
 | `src/lib/dates.ts`, `src/lib/json-highlight.ts` | Date formatting and age; home page JSON highlighting |
 | `src/styles/global.css` | Theme variables and base styles |
 | `src/components/` | Site components (Astro or Svelte) |

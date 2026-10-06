@@ -11,21 +11,35 @@ interface Props {
 	description?: string;
 	/** Robots directive, e.g. "noindex" for private pages. */
 	robots?: string;
+	/** Social preview image URL. */
+	image?: string | null;
+	/** The EmDash entry this page shows, for edit mode and plugin metadata. */
+	content?: { collection: string; id: string; slug?: string | null };
+	pageType?: "website" | "article";
 }
 
 const settings = await getSiteSettings();
 const siteTitle = settings.title || "Alex Gravely";
-const { title, description = settings.tagline, robots = "index, nofollow" } = Astro.props;
+const {
+	title,
+	description = settings.tagline,
+	robots = "index, nofollow",
+	image,
+	content,
+	pageType = "website",
+} = Astro.props;
 const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
 
 const pageCtx = createPublicPageContext({
 	Astro,
-	kind: "custom",
-	pageType: "website",
+	kind: content ? "content" : "custom",
+	pageType,
 	title: fullTitle,
 	pageTitle: title ?? siteTitle,
 	description,
 	siteName: siteTitle,
+	image,
+	content,
 });
 ---
 

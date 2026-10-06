@@ -1,0 +1,55 @@
+---
+import { PortableText } from "emdash/ui";
+import PageIntro from "../components/PageIntro.astro";
+import Base from "../layouts/Base.astro";
+import { getPageText, getServices } from "../lib/content";
+
+const [services, page] = await Promise.all([getServices(), getPageText("services")]);
+---
+
+<Base title={page?.data.title ?? "Services"} description="Freelance services from Alex Gravely.">
+	<div class="page">
+		<PageIntro slug="services" fallbackTitle="Services" />
+		<ul class="card-list">
+			{
+				services.map((service) => (
+					<li class="card" id={service.id}>
+						<h2 {...service.edit.title}>{service.data.title}</h2>
+						<p {...service.edit.summary}>{service.data.summary}</p>
+						{service.data.details && service.data.details.length > 0 && (
+							<div class="prose" {...service.edit.details}>
+								<PortableText value={service.data.details} />
+							</div>
+						)}
+						<p class="ask">
+							<a href={`/contact?${new URLSearchParams({ subject: service.data.title })}#form`}>
+								Ask about {service.data.title} &rarr;
+							</a>
+						</p>
+					</li>
+				))
+			}
+		</ul>
+		<p class="cta">
+			Something else in mind? <a href="/contact#form">Get in touch</a>.
+		</p>
+	</div>
+</Base>
+
+<style>
+	.card {
+		display: grid;
+		gap: 0.4rem;
+		font-size: 0.8rem;
+	}
+	h2 {
+		font-size: 1rem;
+	}
+	.ask {
+		font-size: 0.7rem;
+	}
+	.cta {
+		margin-top: 1.25rem;
+		font-size: 0.8rem;
+	}
+</style>

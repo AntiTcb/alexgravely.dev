@@ -1,9 +1,7 @@
-// Secrets aren't in wrangler.jsonc, so `wrangler types` can't see them.
+// Secrets come from .dev.vars.example via `pnpm cf-typegen`. This one is
+// optional (only needed when TURNSTILE_SITE_KEY is set), so it's declared here.
 declare namespace Cloudflare {
 	interface Env {
-		STRIPE_SECRET_KEY: string;
-		STRIPE_WEBHOOK_SECRET: string;
-		PAYPAL_CLIENT_SECRET: string;
-		PAYPAL_WEBHOOK_ID: string;
+		TURNSTILE_SECRET_KEY?: string;
 	}
 }

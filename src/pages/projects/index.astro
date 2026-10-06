@@ -1,0 +1,65 @@
+---
+import PageIntro from "../../components/PageIntro.astro";
+import Base from "../../layouts/Base.astro";
+import { getPageText, getPortfolio } from "../../lib/content";
+
+const [portfolio, page] = await Promise.all([getPortfolio(), getPageText("projects")]);
+---
+
+<Base title={page?.data.title ?? "Projects"} description="Sites Alex Gravely builds and maintains.">
+	<div class="page">
+		<PageIntro slug="projects" fallbackTitle="Projects" />
+		<ul class="card-list">
+			{
+				portfolio.map((site) => (
+					<li class="card">
+						<h2>
+							<a href={`/projects/${site.id}`}>{site.data.name}</a>
+						</h2>
+						{site.data.role && <p class="muted role">{site.data.role}</p>}
+						{site.data.summary && <p>{site.data.summary}</p>}
+						{site.data.tech && site.data.tech.length > 0 && (
+							<ul class="chips" aria-label="Tech used">
+								{site.data.tech.map((t) => (
+									<li>{t.name}</li>
+								))}
+							</ul>
+						)}
+						<p class="visit">
+							<a href={site.data.url} target="_blank" rel="noreferrer">
+								{site.data.url.replace(/^https?:\/\//, "")}
+							</a>
+						</p>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</Base>
+
+<style>
+	.card-list {
+		grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+	}
+	.card {
+		display: grid;
+		gap: 0.4rem;
+		align-content: start;
+		font-size: 0.75rem;
+	}
+	h2 {
+		font-size: 1rem;
+	}
+	h2 a {
+		text-decoration: none;
+	}
+	h2 a:hover {
+		text-decoration: underline;
+	}
+	.role {
+		font-size: 0.65rem;
+	}
+	.visit {
+		font-size: 0.65rem;
+	}
+</style>

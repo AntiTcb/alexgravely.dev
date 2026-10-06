@@ -71,10 +71,12 @@ Settled by the owner: home, résumé, and the pay flow. The rest were proposed a
 | `/` | Settled | Profile entry in EmDash. |
 | `/resume` | Settled | `profile`, `jobs`, `skills`, `education`, `portfolio`, `certifications`, `open_source` collections. Keep the print stylesheet behavior: hide nav and icons, print link URLs, list skills as text. Keep the live ticker as a small client script with the start date as a CMS field. |
 | `/pay/[token]` and `/pay` | Settled | Invoice tables in D1 (section 6). |
-| `/projects`, `/projects/[slug]` | Proposed | `portfolio` collection, which has a long write-up field. |
-| `/services` | Proposed | What Alex offers freelance, linking to contact. |
-| `/contact` | Proposed | Form handled by a Worker endpoint. |
-| `/blog` | Proposed, optional | EmDash posts. |
+| `/projects`, `/projects/[slug]` | Built (phase 5) | `portfolio` collection; detail shows the long write-up, or the résumé bullets if there is none. |
+| `/services` | Built (phase 5) | `services` collection; each links to `/contact` with the subject filled in. |
+| `/contact` | Built (phase 5) | Form posts to `/api/contact`, which stores the message in D1 (`contact_messages`) and emails it to `NOTIFY_EMAIL` with Reply-To set to the visitor. Honeypot field; optional Turnstile when `TURNSTILE_SITE_KEY` is set. |
+| `/blog`, `/blog/[slug]` | Built (phase 5) | `posts` collection (drafts, scheduling, preview, SEO). |
+
+The owner asked for all proposed pages and may remove some later. Page titles and intro text come from a `pages` collection, and the header nav is the EmDash `primary` menu, so a page can be dropped from the nav in the admin before its route is deleted.
 
 Carry over: Google Analytics (same measurement ID), favicons and `site.webmanifest`, the dark monospace look as a starting point.
 
@@ -91,6 +93,9 @@ Move all hardcoded résumé and profile content into the CMS so nothing requires
 | `portfolio` | name, URL, summary, role, tech used, résumé bullet points, featured flag, show-on-résumé flag, sort order, optional long write-up. Replaces the earlier `projects` idea: one collection drives every portfolio list on the site. |
 | `certifications` | area (for example Yu-Gi-Oh! TCG, Riftbound), credential, since date, notes, optional link |
 | `open_source` | project, role, description |
+| `services` | title, summary, optional details, sort order |
+| `posts` | title, excerpt, featured image, content |
+| `pages` | title and intro text for the projects, services, contact and blog pages (entry slug = page) |
 
 Seed these from `resume.svelte` and `profile.json`. Where the two disagree, the résumé is the more recently edited source (last commit 2026-09-08, "Update side projects"), but confirm with the owner.
 
@@ -211,7 +216,7 @@ Build without live credentials first. Everything through phase 4 can be done and
 2. **Content model.** *(Done 2026-10-06.)* Create the collections in section 5 and seed them from the old files. The old sources were removed in phase 1; read them from `main` (`git show main:src/routes/resume.svelte`, `git show main:static/profile.json`).
 3. **Core pages.** *(Done 2026-10-06.)* Base layout, header, home, résumé with print styles and ticker, analytics.
 4. **Payments.** *(Built 2026-10-06; real-sandbox test pending credentials.)* D1 migration, `/pay` routes, both providers against their sandboxes, webhooks, admin invoice page.
-5. **Remaining pages.** Whichever proposed pages the owner confirms.
+5. **Remaining pages.** *(Done 2026-10-06: all of them.)* Whichever proposed pages the owner confirms.
 6. **Deploy.** Cloudflare resources, secrets, webhook endpoints registered with Stripe and PayPal, then DNS cutover. The owner does the cutover and supplies live credentials.
 
 ## 8. Acceptance checks
@@ -226,7 +231,7 @@ Build without live credentials first. Everything through phase 4 can be done and
 
 ## 9. Open questions for the owner
 
-1. **Proposed pages:** which of `/projects`, `/services`, `/contact`, `/blog` to build.
+1. ~~**Proposed pages.**~~ Resolved: all built; the owner will remove any he doesn't want.
 2. ~~**Home page:** keep the highlighted-JSON presentation, or redesign it.~~ Resolved: keep it for now.
 3. ~~**Admin protection for `/admin/invoices`.**~~ Resolved: reuses the EmDash admin login (see 6.6).
 4. ~~**`socialinks/`:** move to its own repo, or delete.~~ Resolved: deleted on 2026-10-06 (still in git history).

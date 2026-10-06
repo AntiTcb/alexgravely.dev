@@ -1,44 +1,8 @@
-// Invoice emails through Cloudflare Email Sending (the EMAIL send_email binding).
+// Invoice emails: the link to pay, the client's receipt, and notices to Alex.
 
+import { type EmailConfig, emailLayout as layout, escapeHtml, sendEmail as send } from "../email";
 import type { Invoice, VerifiedPayment } from "./db";
 import { formatMoney } from "./money";
-
-interface EmailConfig {
-	EMAIL: SendEmail;
-	EMAIL_FROM: string;
-	EMAIL_FROM_NAME: string;
-	NOTIFY_EMAIL: string;
-}
-
-interface Message {
-	to: string;
-	subject: string;
-	text: string;
-	html: string;
-}
-
-function escapeHtml(text: string): string {
-	return text
-		.replace(/&/g, "&amp;")
-		.replace(/</g, "&lt;")
-		.replace(/>/g, "&gt;")
-		.replace(/"/g, "&quot;");
-}
-
-async function send(env: EmailConfig, message: Message): Promise<void> {
-	await env.EMAIL.send({
-		from: { email: env.EMAIL_FROM, name: env.EMAIL_FROM_NAME },
-		replyTo: env.NOTIFY_EMAIL || undefined,
-		to: message.to,
-		subject: message.subject,
-		text: message.text,
-		html: message.html,
-	});
-}
-
-function layout(bodyHtml: string): string {
-	return `<!doctype html><html><body style="font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.5;color:#222;max-width:560px;margin:0 auto;padding:16px">${bodyHtml}</body></html>`;
-}
 
 function payUrl(origin: string, invoice: Invoice): string {
 	return `${origin}/pay/${invoice.token}`;

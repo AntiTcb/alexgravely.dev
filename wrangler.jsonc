@@ -25,7 +25,7 @@
 	// The sender domain must be onboarded under Email Service before deploy.
 	"send_email": [{ "name": "EMAIL" }],
 	// Public configuration. Secrets (STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET,
-	// PAYPAL_CLIENT_SECRET, PAYPAL_WEBHOOK_ID) are set with `wrangler secret put`
+	// PAYPAL_CLIENT_SECRET, PAYPAL_WEBHOOK_ID, optional TURNSTILE_SECRET_KEY) are set with `wrangler secret put`
 	// and, locally, in .dev.vars (see .dev.vars.example).
 	"vars": {
 		"STRIPE_API_BASE": "https://api.stripe.com",
@@ -34,8 +34,11 @@
 		"PAYPAL_CLIENT_ID": "",
 		"EMAIL_FROM": "invoices@alexgravely.dev",
 		"EMAIL_FROM_NAME": "Alex Gravely",
-		// Receives payment notifications and double-payment alerts.
+		// Receives payment notices, double-payment alerts, and contact messages.
 		"NOTIFY_EMAIL": "antitcb@gmail.com",
+		// Optional Cloudflare Turnstile on /contact. Leave empty to rely on the
+		// honeypot only; when set, TURNSTILE_SECRET_KEY must be a secret.
+		"TURNSTILE_SITE_KEY": "",
 	},
 	// EmDash scheduled publishing and maintenance.
 	"triggers": {

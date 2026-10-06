@@ -249,6 +249,7 @@
 			"slug": "portfolio",
 			"label": "Portfolio",
 			"labelSingular": "Portfolio site",
+			"urlPattern": "/projects/{slug}",
 			"supports": [
 				"drafts",
 				"revisions",
@@ -434,6 +435,133 @@
 					"slug": "sort_order",
 					"label": "Sort order",
 					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "services",
+			"label": "Services",
+			"labelSingular": "Service",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "summary",
+					"label": "Summary",
+					"type": "text",
+					"required": true
+				},
+				{
+					"slug": "details",
+					"label": "Details",
+					"type": "portableText"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "posts",
+			"label": "Blog posts",
+			"labelSingular": "Blog post",
+			"urlPattern": "/blog/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"preview",
+				"scheduling",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text"
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "pages",
+			"label": "Page text",
+			"labelSingular": "Page text",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "intro",
+					"label": "Intro",
+					"type": "portableText"
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "Projects",
+					"url": "/projects"
+				},
+				{
+					"type": "custom",
+					"label": "Services",
+					"url": "/services"
+				},
+				{
+					"type": "custom",
+					"label": "Blog",
+					"url": "/blog"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
+				},
+				{
+					"type": "custom",
+					"label": "Résumé",
+					"url": "/resume"
 				}
 			]
 		}
@@ -1214,6 +1342,130 @@
 						}
 					],
 					"sort_order": 20
+				}
+			}
+		],
+		"services": [
+			{
+				"id": "web-development",
+				"slug": "web-development",
+				"status": "published",
+				"data": {
+					"title": "Website development",
+					"summary": "Full stack websites: templating the design, building the backend, and setting up continuous deployment.",
+					"sort_order": 10
+				}
+			},
+			{
+				"id": "wordpress-maintenance",
+				"slug": "wordpress-maintenance",
+				"status": "published",
+				"data": {
+					"title": "WordPress maintenance",
+					"summary": "Ongoing upkeep of WordPress sites: front-end design changes, updates, and keeping the server stable.",
+					"sort_order": 20
+				}
+			},
+			{
+				"id": "server-administration",
+				"slug": "server-administration",
+				"status": "published",
+				"data": {
+					"title": "Server administration",
+					"summary": "Hosting and stability for PHP, MySQL, NGINX and Ubuntu stacks.",
+					"sort_order": 30
+				}
+			},
+			{
+				"id": "custom-tools",
+				"slug": "custom-tools",
+				"status": "published",
+				"data": {
+					"title": "Custom tools and bots",
+					"summary": "Internal tools and Discord bots, written in C# and .NET, to automate repetitive work and engage communities.",
+					"sort_order": 40
+				}
+			}
+		],
+		"pages": [
+			{
+				"id": "projects",
+				"slug": "projects",
+				"status": "published",
+				"data": {
+					"title": "Projects",
+					"intro": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Sites I build and maintain."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "services",
+				"slug": "services",
+				"status": "published",
+				"data": {
+					"title": "Services",
+					"intro": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "I take on freelance work. Here is what I can help with."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "contact",
+				"slug": "contact",
+				"status": "published",
+				"data": {
+					"title": "Contact",
+					"intro": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Have a project in mind, or a question? Send me a message and I'll get back to you."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "blog",
+				"slug": "blog",
+				"status": "published",
+				"data": {
+					"title": "Blog",
+					"intro": [
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Notes and write-ups."
+								}
+							]
+						}
+					]
 				}
 			}
 		]
