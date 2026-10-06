@@ -115,7 +115,7 @@ Seed these from `resume.svelte` and `profile.json`. Where the two disagree, the 
 
 **Model: invoice links.** Alex creates an invoice and sends the client a link. The client cannot choose or change the amount.
 
-**Providers: Stripe and PayPal as two separate integrations.** PayPal cannot be routed through Stripe here, because Stripe only offers PayPal to businesses based in the EU, UK, Switzerland, Norway and Liechtenstein, and this business is assumed to be US-based.
+**Providers: Stripe and PayPal as two separate integrations.** PayPal cannot be routed through Stripe here, because Stripe only offers PayPal to businesses based in the EU, UK, Switzerland, Norway and Liechtenstein, and this business is US-based (confirmed by the owner). Venmo is offered through the PayPal buttons (confirmed).
 
 ### 6.1 Storage
 
@@ -161,7 +161,7 @@ CREATE TABLE payment_events (
 | `POST /api/pay/paypal/capture` | Captures the approved PayPal order. |
 | `POST /api/webhooks/stripe` | Verifies the signature and marks the invoice paid. |
 | `POST /api/webhooks/paypal` | Verifies the signature and marks the invoice paid. |
-| `/admin/invoices` | Create, void, and copy links for invoices. Must be protected (see open questions). |
+| `/admin/invoices` | Create, email, void, and copy links for invoices. Protected by the EmDash admin login (see 6.6). |
 
 ### 6.3 Rules
 
@@ -188,6 +188,20 @@ CREATE TABLE payment_events (
 | `PAYPAL_CLIENT_ID` | Variable (public) |
 | `PAYPAL_CLIENT_SECRET`, `PAYPAL_WEBHOOK_ID` | Secrets |
 | `PAYPAL_API_BASE` | Variable: sandbox or live API base URL |
+| `STRIPE_API_BASE` | Variable: `https://api.stripe.com` (overridable for tests) |
+| `EMAIL` | `send_email` binding (Cloudflare Email Sending) |
+| `EMAIL_FROM`, `EMAIL_FROM_NAME`, `NOTIFY_EMAIL` | Variables: sender, and where payment notices go |
+
+### 6.6 Built in phase 4 (2026-10-06)
+
+- **Admin protection:** reuses the EmDash login. EmDash's middleware sets `Astro.locals.user` on every route, so `/admin/invoices` requires a signed-in user with the ADMIN role (level 50) and otherwise redirects to `/_emdash/admin/login?redirect=...`. Cloudflare Access is not needed. Admin form posts also require a same-origin `Origin` header.
+- **Emails (owner decision: the site sends them):** invoice link on create (optional checkbox) and via Send/Resend; receipt to the client when a payment is applied; notices to `NOTIFY_EMAIL` on payment and on any payment that needs review. Sent with Cloudflare Email Sending (`send_email` binding `EMAIL`), the same mechanism as EmDash's `@emdash-cms/cloudflare` email plugin. The sender domain must be onboarded before launch.
+- **Schema additions** to 6.1: `invoices.emailed_at`; `payment_events.provider_txn`, `amount_cents`, `currency`.
+- **Amount check:** a webhook payment applies only if its amount and currency match the invoice exactly. Otherwise it is recorded with `applied = 0` and shown under "Needs review", like a double payment.
+- **Mark-paid** runs as one D1 batch: the conditional `UPDATE ... WHERE status = 'open'` and the event insert, whose `applied` is the update's `changes()`. Replays hit the unique `(provider, event_id)` and change nothing.
+- **PayPal capture endpoint** refuses invoices that aren't open and orders whose `custom_id` isn't this invoice. Orders also set PayPal `invoice_id`, so PayPal itself rejects a second completed payment for an invoice.
+- **No provider SDKs on the server:** Stripe and PayPal are called with `fetch`; Stripe signatures are checked with Web Crypto HMAC (5-minute tolerance). `STRIPE_API_BASE` is a var so tests can point at a mock.
+- **Verified locally** against mock Stripe and PayPal APIs (51 checks: tampering, replays, double payment, amount and currency mismatch, void, unknown tokens, `noindex`, admin login and CSRF). **Not yet tested against the real Stripe test mode or PayPal sandbox**, which needs the owner's credentials; the PayPal button UI also hasn't been exercised because the build sandbox couldn't reach paypal.com.
 
 ## 7. Build order
 
@@ -196,7 +210,7 @@ Build without live credentials first. Everything through phase 4 can be done and
 1. **Scaffold.** *(Done 2026-10-06.)* New Astro project on a branch, Cloudflare adapter, React, EmDash, `wrangler` config with D1 and R2 bindings, local dev running. Remove the SvelteKit source and `netlify.toml` once the new project builds.
 2. **Content model.** *(Done 2026-10-06.)* Create the collections in section 5 and seed them from the old files. The old sources were removed in phase 1; read them from `main` (`git show main:src/routes/resume.svelte`, `git show main:static/profile.json`).
 3. **Core pages.** *(Done 2026-10-06.)* Base layout, header, home, résumé with print styles and ticker, analytics.
-4. **Payments.** D1 migration, `/pay` routes, both providers against their sandboxes, webhooks, admin invoice page.
+4. **Payments.** *(Built 2026-10-06; real-sandbox test pending credentials.)* D1 migration, `/pay` routes, both providers against their sandboxes, webhooks, admin invoice page.
 5. **Remaining pages.** Whichever proposed pages the owner confirms.
 6. **Deploy.** Cloudflare resources, secrets, webhook endpoints registered with Stripe and PayPal, then DNS cutover. The owner does the cutover and supplies live credentials.
 
@@ -214,12 +228,12 @@ Build without live credentials first. Everything through phase 4 can be done and
 
 1. **Proposed pages:** which of `/projects`, `/services`, `/contact`, `/blog` to build.
 2. ~~**Home page:** keep the highlighted-JSON presentation, or redesign it.~~ Resolved: keep it for now.
-3. **Admin protection for `/admin/invoices`:** Cloudflare Access is known to work. Reusing the EmDash admin login would be tidier, but whether EmDash exposes its session to custom pages has not been checked.
+3. ~~**Admin protection for `/admin/invoices`.**~~ Resolved: reuses the EmDash admin login (see 6.6).
 4. ~~**`socialinks/`:** move to its own repo, or delete.~~ Resolved: deleted on 2026-10-06 (still in git history).
 5. **Profile data:** current location. (Resolved: portfolio lists merged; age calculated from a birth date; Discord is `antitcb`.)
-6. **Business location:** confirm the business is US-based, since the separate-PayPal decision depends on it.
-7. **Venmo:** enable through PayPal or not.
-8. **Invoice emails:** whether the site should email invoice links and receipts, or Alex sends links himself.
+6. ~~**Business location.**~~ Resolved: US-based.
+7. ~~**Venmo.**~~ Resolved: enabled through PayPal.
+8. ~~**Invoice emails.**~~ Resolved: the site sends invoice links and receipts (see 6.6). Still to choose: the sender address (`EMAIL_FROM`, currently `invoices@alexgravely.dev`).
 9. **Domain:** whether DNS for alexgravely.dev is already on Cloudflare.
 
 ## 10. Out of scope

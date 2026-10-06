@@ -1,0 +1,29 @@
+---
+import Base from "../../layouts/Base.astro";
+
+Astro.response.headers.set("X-Robots-Tag", "noindex");
+---
+
+<Base title="Pay an invoice" robots="noindex, nofollow">
+	<article>
+		<h1>Pay an invoice</h1>
+		<p>To pay an invoice, use the link in the invoice email you received.</p>
+		<p>
+			Can't find it? Email <a href="mailto:antitcb@gmail.com">antitcb@gmail.com</a> and I'll send it again.
+		</p>
+	</article>
+</Base>
+
+<style>
+	article {
+		max-width: 40rem;
+		margin: 1rem auto;
+		font-size: 0.8rem;
+	}
+	h1 {
+		margin-bottom: 1rem;
+	}
+	p + p {
+		margin-top: 0.5rem;
+	}
+</style>

@@ -1,0 +1,345 @@
+---
+import { env } from "cloudflare:workers";
+import Base from "../../layouts/Base.astro";
+import { isSameOrigin, requireAdmin } from "../../lib/admin";
+import {
+	createInvoice,
+	getInvoice,
+	listInvoices,
+	listPaymentsNeedingReview,
+	markEmailed,
+	voidInvoice,
+} from "../../lib/invoices/db";
+import { sendInvoiceEmail } from "../../lib/invoices/email";
+import { formatMoney, parseAmountInput } from "../../lib/invoices/money";
+
+Astro.response.headers.set("X-Robots-Tag", "noindex");
+Astro.response.headers.set("Cache-Control", "no-store");
+
+const denied = requireAdmin(Astro);
+if (denied) return denied;
+
+const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+// Post/redirect/get: actions redirect back here with a message.
+if (Astro.request.method === "POST") {
+	if (!isSameOrigin(Astro.request, Astro.url)) return new Response("Forbidden", { status: 403 });
+
+	const form = await Astro.request.formData();
+	const action = String(form.get("action") ?? "");
+	const back = (msg: string, kind: "ok" | "error" = "ok") =>
+		Astro.redirect(`/admin/invoices?${new URLSearchParams({ [kind]: msg })}`, 303);
+
+	try {
+		if (action === "create") {
+			const client_name = String(form.get("client_name") ?? "").trim();
+			const client_email = String(form.get("client_email") ?? "").trim() || null;
+			const description = String(form.get("description") ?? "").trim();
+			const amount_cents = parseAmountInput(String(form.get("amount") ?? ""));
+			const due_date = String(form.get("due_date") ?? "").trim() || null;
+			const send = form.get("send") === "on";
+
+			if (!client_name || !description) return back("Client name and description are required.", "error");
+			if (amount_cents === null) return back("Amount must be a positive number like 250 or 1,234.50.", "error");
+			if (client_email && !EMAIL_RE.test(client_email)) return back("Client email doesn't look valid.", "error");
+			if (due_date && !DATE_RE.test(due_date)) return back("Due date must be YYYY-MM-DD.", "error");
+			if (send && !client_email) return back("Add a client email to send the invoice.", "error");
+
+			const invoice = await createInvoice(env.DB, { client_name, client_email, description, amount_cents, due_date });
+			if (send) {
+				try {
+					await sendInvoiceEmail(env, Astro.url.origin, invoice);
+					await markEmailed(env.DB, invoice.id);
+					return back(`Invoice created and emailed to ${client_email}.`);
+				} catch (error) {
+					console.error("[admin/invoices] email failed", error);
+					return back("Invoice created, but the email failed. Use Resend or copy the link.", "error");
+				}
+			}
+			return back("Invoice created.");
+		}
+
+		const id = String(form.get("id") ?? "");
+		if (action === "void") {
+			return (await voidInvoice(env.DB, id)) ? back("Invoice voided.") : back("Only open invoices can be voided.", "error");
+		}
+		if (action === "resend") {
+			const invoice = await getInvoice(env.DB, id);
+			if (!invoice?.client_email) return back("That invoice has no client email.", "error");
+			if (invoice.status !== "open") return back("Only open invoices can be resent.", "error");
+			await sendInvoiceEmail(env, Astro.url.origin, invoice);
+			await markEmailed(env.DB, invoice.id);
+			return back(`Invoice emailed to ${invoice.client_email}.`);
+		}
+		return back("Unknown action.", "error");
+	} catch (error) {
+		console.error("[admin/invoices]", error);
+		return back("Something went wrong. Check the Worker logs.", "error");
+	}
+}
+
+const [invoices, review] = await Promise.all([listInvoices(env.DB), listPaymentsNeedingReview(env.DB)]);
+const ok = Astro.url.searchParams.get("ok");
+const error = Astro.url.searchParams.get("error");
+const origin = Astro.url.origin;
+---
+
+<Base title="Invoices" robots="noindex, nofollow">
+	<div class="admin">
+		<h1>Invoices</h1>
+		{ok && <p class="flash ok" role="status">{ok}</p>}
+		{error && <p class="flash error" role="alert">{error}</p>}
+
+		{
+			review.length > 0 && (
+				<section class="review">
+					<h2>Needs review</h2>
+					<p>
+						These payments were verified but not applied (double payment, void invoice, or amount mismatch).
+						Refund them in the provider's dashboard if needed.
+					</p>
+					<table>
+						<thead>
+							<tr>
+								<th>Received</th>
+								<th>Client</th>
+								<th>Provider</th>
+								<th>Transaction</th>
+								<th>Paid</th>
+								<th>Invoice</th>
+							</tr>
+						</thead>
+						<tbody>
+							{review.map((r) => (
+								<tr>
+									<td>{r.received_at}</td>
+									<td>{r.client_name}</td>
+									<td>{r.provider}</td>
+									<td>
+										<code>{r.provider_txn}</code>
+									</td>
+									<td>{r.amount_cents != null && r.currency ? formatMoney(r.amount_cents, r.currency) : "?"}</td>
+									<td>
+										{formatMoney(r.invoice_amount_cents, r.invoice_currency)} ({r.invoice_status})
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</section>
+			)
+		}
+
+		<section>
+			<h2>New invoice</h2>
+			<form method="post" class="create">
+				<input type="hidden" name="action" value="create" />
+				<label>Client name <input name="client_name" required maxlength="200" /></label>
+				<label>Client email <input name="client_email" type="email" maxlength="254" /></label>
+				<label class="wide">
+					Description <textarea name="description" required rows="3" maxlength="2000"></textarea>
+				</label>
+				<label>Amount (USD) <input name="amount" required inputmode="decimal" placeholder="250.00" /></label>
+				<label>Due date <input name="due_date" type="date" /></label>
+				<label class="check"><input name="send" type="checkbox" checked /> Email the invoice link to the client</label>
+				<button type="submit">Create invoice</button>
+			</form>
+		</section>
+
+		<section>
+			<h2>All invoices</h2>
+			{
+				invoices.length === 0 ? (
+					<p>No invoices yet.</p>
+				) : (
+					<table>
+						<thead>
+							<tr>
+								<th>Created</th>
+								<th>Client</th>
+								<th>Description</th>
+								<th>Amount</th>
+								<th>Status</th>
+								<th>Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{invoices.map((inv) => (
+								<tr>
+									<td>{inv.created_at.slice(0, 10)}</td>
+									<td>
+										{inv.client_name}
+										{inv.client_email && <div class="muted">{inv.client_email}</div>}
+									</td>
+									<td>{inv.description}</td>
+									<td>{formatMoney(inv.amount_cents, inv.currency)}</td>
+									<td>
+										{inv.status}
+										{inv.status === "paid" && (
+											<div class="muted">
+												{inv.provider} {inv.paid_at?.slice(0, 10)}
+											</div>
+										)}
+										{inv.status === "open" && inv.emailed_at && (
+											<div class="muted">emailed {inv.emailed_at.slice(0, 10)}</div>
+										)}
+									</td>
+									<td class="actions">
+										<button type="button" class="copy" data-url={`${origin}/pay/${inv.token}`}>
+											Copy link
+										</button>
+										{inv.status === "open" && inv.client_email && (
+											<form method="post">
+												<input type="hidden" name="action" value="resend" />
+												<input type="hidden" name="id" value={inv.id} />
+												<button type="submit">{inv.emailed_at ? "Resend" : "Send"}</button>
+											</form>
+										)}
+										{inv.status === "open" && (
+											<form method="post" class="void">
+												<input type="hidden" name="action" value="void" />
+												<input type="hidden" name="id" value={inv.id} />
+												<button type="submit">Void</button>
+											</form>
+										)}
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				)
+			}
+		</section>
+	</div>
+</Base>
+
+<script>
+	for (const button of document.querySelectorAll<HTMLButtonElement>("button.copy")) {
+		button.addEventListener("click", async () => {
+			await navigator.clipboard.writeText(button.dataset.url ?? "");
+			const label = button.textContent;
+			button.textContent = "Copied";
+			setTimeout(() => (button.textContent = label), 1500);
+		});
+	}
+	for (const form of document.querySelectorAll<HTMLFormElement>("form.void")) {
+		form.addEventListener("submit", (event) => {
+			if (!confirm("Void this invoice? The client will no longer be able to pay it.")) event.preventDefault();
+		});
+	}
+</script>
+
+<style>
+	.admin {
+		max-width: 70rem;
+		margin: 0 auto;
+		font-size: 0.7rem;
+		text-shadow: none;
+	}
+	h1 {
+		margin-bottom: 0.5rem;
+	}
+	section {
+		margin: 1.25rem 0;
+	}
+	h2 {
+		margin-bottom: 0.5rem;
+	}
+	.flash {
+		padding: 0.5rem 0.75rem;
+		border-radius: 0.35rem;
+		background: var(--bg-primary);
+	}
+	.flash.error,
+	.review h2 {
+		color: #ff8a80;
+	}
+	.review {
+		padding: 0.75rem;
+		border: 1px solid #ff8a80;
+		border-radius: 0.5rem;
+	}
+	.review p {
+		margin-bottom: 0.5rem;
+	}
+	.create {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: 0.6rem 1rem;
+		align-items: end;
+	}
+	.create .wide {
+		grid-column: 1 / -1;
+	}
+	label {
+		display: grid;
+		gap: 0.2rem;
+	}
+	label.check {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+	}
+	input,
+	textarea {
+		width: 100%;
+		padding: 0.35rem 0.45rem;
+		border: 1px solid #555;
+		border-radius: 0.25rem;
+		background: var(--bg-primary);
+		color: var(--text-primary);
+		font: inherit;
+	}
+	input[type="checkbox"] {
+		width: auto;
+	}
+	button {
+		padding: 0.35rem 0.7rem;
+		border: 1px solid var(--text-primary);
+		border-radius: 0.25rem;
+		background: var(--bg-primary);
+		cursor: pointer;
+	}
+	table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+	th,
+	td {
+		padding: 0.4rem;
+		border-bottom: 1px solid #555;
+		text-align: left;
+		vertical-align: top;
+	}
+	.muted {
+		color: var(--text-secondary);
+		opacity: 0.8;
+	}
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.3rem;
+	}
+	@media (max-width: 700px) {
+		table,
+		thead,
+		tbody,
+		tr,
+		th,
+		td {
+			display: block;
+		}
+		thead {
+			display: none;
+		}
+		tr {
+			padding: 0.5rem 0;
+			border-bottom: 1px solid #555;
+		}
+		td {
+			border: none;
+			padding: 0.15rem 0;
+		}
+	}
+</style>

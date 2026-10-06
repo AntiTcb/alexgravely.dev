@@ -1,0 +1,230 @@
+---
+import { env } from "cloudflare:workers";
+import Base from "../../layouts/Base.astro";
+import { getInvoiceByToken } from "../../lib/invoices/db";
+import { formatMoney } from "../../lib/invoices/money";
+
+Astro.response.headers.set("X-Robots-Tag", "noindex");
+Astro.response.headers.set("Cache-Control", "no-store");
+Astro.response.headers.set("Referrer-Policy", "no-referrer");
+
+const invoice = await getInvoiceByToken(env.DB, Astro.params.token ?? "");
+if (!invoice) {
+	return new Response("Not found", {
+		status: 404,
+		headers: { "Content-Type": "text/plain", "X-Robots-Tag": "noindex" },
+	});
+}
+
+const amount = formatMoney(invoice.amount_cents, invoice.currency);
+const params = Astro.url.searchParams;
+// Return-redirect messages only. They never change the invoice: the
+// provider's webhook does that.
+const returnedPaid = params.has("paid") && invoice.status === "open";
+const cancelled = params.has("cancelled") && invoice.status === "open";
+const failed = params.get("error");
+
+const payPalClientId = env.PAYPAL_CLIENT_ID;
+const payPalSdk = payPalClientId
+	? `https://www.paypal.com/sdk/js?${new URLSearchParams({
+			"client-id": payPalClientId,
+			currency: invoice.currency,
+			intent: "capture",
+			"enable-funding": "venmo",
+		})}`
+	: null;
+---
+
+<Base title={`Invoice for ${invoice.client_name}`} robots="noindex, nofollow">
+	<article class="invoice">
+		<h1>Invoice</h1>
+		<dl>
+			<dt>For</dt>
+			<dd>{invoice.client_name}</dd>
+			<dt>Description</dt>
+			<dd class="description">{invoice.description}</dd>
+			<dt>Amount</dt>
+			<dd class="amount">{amount}</dd>
+			{
+				invoice.due_date && invoice.status === "open" && (
+					<>
+						<dt>Due</dt>
+						<dd>{invoice.due_date}</dd>
+					</>
+				)
+			}
+			<dt>Status</dt>
+			<dd class={`status status-${invoice.status}`}>
+				{invoice.status === "open" ? "Unpaid" : invoice.status === "paid" ? "Paid" : "Void"}
+			</dd>
+		</dl>
+
+		{
+			invoice.status === "paid" && (
+				<p class="notice">
+					Paid{invoice.paid_at && ` on ${invoice.paid_at.slice(0, 10)}`}. Thank you!
+				</p>
+			)
+		}
+		{invoice.status === "void" && <p class="notice">This invoice has been cancelled and can't be paid.</p>}
+
+		{
+			invoice.status === "open" && (
+				<>
+					{returnedPaid && (
+						<p class="notice" role="status">
+							Thanks! Your payment is being confirmed. This page will show "Paid" once it is, and you'll get
+							a receipt by email.
+						</p>
+					)}
+					{cancelled && <p class="notice">Payment cancelled. You can try again below.</p>}
+					{failed && (
+						<p class="notice error" role="alert">
+							Something went wrong starting the payment. Please try again, or reply to the invoice email.
+						</p>
+					)}
+
+					<section class="pay" aria-label="Payment options">
+						<form method="post" action="/api/pay/stripe">
+							<input type="hidden" name="token" value={invoice.token} />
+							<button type="submit" class="card-button">
+								Pay {amount} by card
+							</button>
+						</form>
+
+						{payPalSdk && (
+							<div
+								id="paypal-buttons"
+								data-sdk={payPalSdk}
+								data-token={invoice.token}
+								data-return={`/pay/${invoice.token}`}
+								hidden
+							/>
+						)}
+						<p id="paypal-error" class="notice error" role="alert" hidden>
+							PayPal isn't working right now. Please try again, or pay by card.
+						</p>
+					</section>
+				</>
+			)
+		}
+	</article>
+</Base>
+
+<script>
+	// PayPal / Venmo buttons. Only the token is sent to our server; the
+	// order amount is set server-side from the invoice.
+	const container = document.getElementById("paypal-buttons");
+	const errorBox = document.getElementById("paypal-error");
+
+	interface PayPalNamespace {
+		Buttons(options: Record<string, unknown>): { render(el: HTMLElement): Promise<void> };
+	}
+
+	function showError() {
+		if (container) container.hidden = true;
+		if (errorBox) errorBox.hidden = false;
+	}
+
+	async function post(path: string, body: unknown): Promise<{ id?: string; status?: string }> {
+		const res = await fetch(path, {
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			body: JSON.stringify(body),
+		});
+		const data = (await res.json()) as { id?: string; status?: string; error?: string };
+		if (!res.ok) throw new Error(data.error ?? "request_failed");
+		return data;
+	}
+
+	if (container?.dataset.sdk) {
+		const { sdk, token, return: returnPath } = container.dataset;
+		const script = document.createElement("script");
+		script.src = sdk;
+		script.onload = () => {
+			const paypal = (window as unknown as { paypal?: PayPalNamespace }).paypal;
+			if (!paypal) return showError();
+			paypal
+				.Buttons({
+					style: { layout: "vertical", label: "pay" },
+					createOrder: async () => (await post("/api/pay/paypal/create", { token })).id,
+					onApprove: async (data: { orderID: string }) => {
+						await post("/api/pay/paypal/capture", { token, orderId: data.orderID });
+						window.location.href = `${returnPath}?paid=1`;
+					},
+					onError: showError,
+				})
+				.render(container)
+				.then(() => (container.hidden = false))
+				.catch(showError);
+		};
+		script.onerror = showError;
+		document.head.appendChild(script);
+	}
+</script>
+
+<style>
+	.invoice {
+		max-width: 32rem;
+		margin: 1rem auto;
+		padding: 1rem;
+		border-radius: 0.5rem;
+		box-shadow: 0 1px 5px white;
+		font-size: 0.8rem;
+	}
+	h1 {
+		margin-bottom: 0.75rem;
+	}
+	dl {
+		display: grid;
+		grid-template-columns: max-content 1fr;
+		gap: 0.35rem 1rem;
+	}
+	dt {
+		color: var(--text-secondary);
+	}
+	.description {
+		white-space: pre-line;
+	}
+	.amount {
+		font-size: 1.1rem;
+	}
+	.status-paid {
+		font-weight: bold;
+	}
+	.notice {
+		margin-top: 1rem;
+		color: var(--text-secondary);
+	}
+	.error {
+		color: #ff8a80;
+	}
+	.pay {
+		margin-top: 1.25rem;
+		display: grid;
+		gap: 0.75rem;
+	}
+	.card-button {
+		width: 100%;
+		padding: 0.7rem 1rem;
+		border: 1px solid var(--text-primary);
+		border-radius: 0.35rem;
+		background: var(--bg-primary);
+		color: var(--text-primary);
+		cursor: pointer;
+		text-shadow: none;
+	}
+	.card-button:hover,
+	.card-button:focus-visible {
+		background: #0d2a0d;
+	}
+	#paypal-buttons[hidden] {
+		display: none;
+	}
+	#paypal-buttons {
+		/* PayPal's buttons render on white; give them a light backdrop. */
+		padding: 0.5rem;
+		border-radius: 0.35rem;
+		background: #fff;
+	}
+</style>

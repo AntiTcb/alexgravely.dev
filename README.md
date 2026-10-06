@@ -21,6 +21,13 @@ pnpm dev
 
 Local D1 and R2 data live in `.wrangler/` and are not committed.
 
+For the invoice pages, also:
+
+```bash
+cp .dev.vars.example .dev.vars   # then fill in Stripe test and PayPal sandbox credentials
+pnpm db:migrate:local            # creates the invoice tables
+```
+
 ### Loading the seed content locally
 
 On a fresh local database, the dev server creates the collections from `seed/seed.json` but not their entries. To load the entries and sign in without passkey setup, open http://localhost:4321/_emdash/api/setup/dev-bypass?redirect=/_emdash/admin once (dev only). To start over, stop the server and delete `.wrangler/state`.
@@ -28,6 +35,30 @@ On a fresh local database, the dev server creates the collections from `seed/see
 ## Content
 
 Everything on the site comes from EmDash collections: `profile` (one entry, slug `main`), `jobs`, `skills`, `education`, `portfolio`, `certifications`, and `open_source`. Read them through the helpers in `src/lib/content.ts`. Use `getPortfolio()` for every portfolio list so new entries appear everywhere.
+
+## Invoices and payments
+
+Clients pay invoices by card (Stripe Checkout) or PayPal/Venmo (PayPal buttons). The full design and rules are in section 6 of the rebuild plan.
+
+| Route | What it does |
+|---|---|
+| `/admin/invoices` | Create, email, void, and copy links for invoices; lists payments that need a manual refund. Requires an EmDash admin login. |
+| `/pay/[token]` | The client's invoice page. `noindex`; unknown tokens are a plain 404. |
+| `/api/pay/stripe`, `/api/pay/paypal/create`, `/api/pay/paypal/capture` | Start a payment. Only the token is accepted from the browser; amounts come from D1. |
+| `/api/webhooks/stripe`, `/api/webhooks/paypal` | Verified webhooks: the only thing that marks an invoice paid. |
+
+Invoice tables are plain D1 (`migrations/`), not EmDash content. Code is in `src/lib/invoices/`. Emails (invoice link, receipt, and notices to `NOTIFY_EMAIL`) go out through Cloudflare Email Sending via the `EMAIL` binding; locally, Wrangler writes them to `.wrangler/tmp/email/` instead of sending.
+
+### Before going live
+
+1. Onboard the sender domain for `EMAIL_FROM` in Cloudflare (Email Service → Email Sending).
+2. Create the D1 database and R2 bucket (the first `pnpm deploy` does this), then run `pnpm db:migrate:remote`.
+3. Set secrets: `wrangler secret put` for `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET`, `PAYPAL_CLIENT_SECRET`, `PAYPAL_WEBHOOK_ID`.
+4. In `wrangler.jsonc` vars, set `PAYPAL_CLIENT_ID`, and switch `PAYPAL_API_BASE` to `https://api-m.paypal.com` for live payments.
+5. Register webhooks:
+   - Stripe: `https://alexgravely.dev/api/webhooks/stripe` for `checkout.session.completed` and `checkout.session.async_payment_succeeded`.
+   - PayPal: `https://alexgravely.dev/api/webhooks/paypal` for `PAYMENT.CAPTURE.COMPLETED`; its webhook ID is `PAYPAL_WEBHOOK_ID`.
+6. Make a sandbox payment with each provider before switching to live keys.
 
 ## Components
 
@@ -40,6 +71,7 @@ Site components can be Astro or Svelte 5 (`.svelte`, in `src/components/`). Reac
 | `pnpm dev` | Dev server, using local D1 and R2 through Wrangler |
 | `pnpm build` | Production build into `dist/` |
 | `pnpm typecheck` | `astro check` |
+| `pnpm db:migrate:local` / `db:migrate:remote` | Apply invoice-table migrations to local / production D1 |
 | `pnpm cf-typegen` | Regenerates `worker-configuration.d.ts` after `wrangler.jsonc` changes |
 | `pnpm deploy` | Build and `wrangler deploy` |
 
@@ -48,11 +80,14 @@ Site components can be Astro or Svelte 5 (`.svelte`, in `src/components/`). Reac
 | Path | What it is |
 |---|---|
 | `astro.config.mjs` | Astro, Cloudflare adapter, React (for the EmDash admin), Svelte, EmDash with D1 and R2 |
-| `wrangler.jsonc` | Worker name, D1 (`DB`) and R2 (`MEDIA`) bindings, EmDash cron |
+| `wrangler.jsonc` | Worker name, D1 (`DB`), R2 (`MEDIA`) and email (`EMAIL`) bindings, public vars, EmDash cron |
 | `src/worker.ts` | Worker entry point (EmDash handler plus scheduled tasks) |
 | `src/live.config.ts` | Registers EmDash content with Astro |
 | `seed/seed.json` | EmDash collections and their initial content |
 | `src/lib/content.ts` | Content query helpers |
+| `src/lib/invoices/` | Invoice storage, Stripe, PayPal, email |
+| `src/lib/admin.ts` | EmDash-login gate for `/admin/*` pages |
+| `migrations/` | D1 migrations for the invoice tables |
 | `src/lib/dates.ts`, `src/lib/json-highlight.ts` | Date formatting and age; home page JSON highlighting |
 | `src/styles/global.css` | Theme variables and base styles |
 | `src/components/` | Site components (Astro or Svelte) |
