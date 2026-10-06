@@ -109,7 +109,7 @@ export interface Profile {
   tagline?: string;
   summary?: string;
   location?: string;
-  age?: number;
+  birth_date?: string;
   email?: string;
   github?: string;
   linkedin?: string;

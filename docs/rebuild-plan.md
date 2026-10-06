@@ -84,7 +84,7 @@ Move all hardcoded résumé and profile content into the CMS so nothing requires
 
 | Collection | Fields |
 |---|---|
-| `profile` (single entry) | name, tagline, summary, location, contact links (email, GitHub, LinkedIn, Discord), career start date, trivia |
+| `profile` (single entry) | name, tagline, summary, location, birth date (age is calculated from it), contact links (email, GitHub, LinkedIn, Discord), career start date, trivia |
 | `jobs` | title, company, start date, end date (empty means present), company description, responsibilities list, sort order |
 | `skills` | name, category (language, framework, system), icon, sort order |
 | `education` | program, school, dates, completed flag, coursework |
@@ -98,10 +98,18 @@ Seed these from `resume.svelte` and `profile.json`. Where the two disagree, the 
 
 - Pages read the portfolio only through `getPortfolio()` in `src/lib/content.ts`, so a new CMS entry shows up everywhere.
 - Genesys Format came only from `profile.json` and has no summary, role, or bullet points yet; fill them in through the admin.
-- Location, `age`, and the Discord tag were carried over unchanged from `profile.json` (open question 5 is still partly open).
+- `age` is no longer stored: the profile holds a birth date (1994-03-10) and the home page calculates the age, without showing the date. Discord is now `antitcb`. Location was carried over unchanged from `profile.json`.
 - The section-level dates on the résumé are fields: "Freelance" heading and start date on `profile`; TCG judging and open source start dates come from the earliest `since` among their entries.
 - `profile` is an ordinary collection with one entry, slug `main`.
 - Svelte (`@astrojs/svelte`) is installed for site components, at the owner's request. React remains for the EmDash admin.
+
+**Done in phase 3 (2026-10-06):**
+
+- Home renders the profile as highlighted JSON, built on the server in the old `profile.json` shape. URLs and emails become links without client JavaScript. The portfolio list is the featured `portfolio` entries.
+- Résumé reads every section from the collections. The live ticker is a Svelte island (`src/components/Ticker.svelte`) reading `career_start`. The print button is a real `<button>`. Print styles hide the nav, icons, ticker and button, print link URLs, and list skills as text.
+- Google Analytics (`G-M1CN4YR1VL`) loads in production builds only.
+- FontAwesome, highlight.js and luxon were not carried over: icons are images or inline SVG, highlighting is a small server-side function, and date math is in `src/lib/dates.ts`.
+- EmDash returns custom `datetime` fields as ISO strings (the generated types agree), not `Date` objects as its docs say. The date helpers accept both.
 
 ## 6. Decisions: payments
 
@@ -187,7 +195,7 @@ Build without live credentials first. Everything through phase 4 can be done and
 
 1. **Scaffold.** *(Done 2026-10-06.)* New Astro project on a branch, Cloudflare adapter, React, EmDash, `wrangler` config with D1 and R2 bindings, local dev running. Remove the SvelteKit source and `netlify.toml` once the new project builds.
 2. **Content model.** *(Done 2026-10-06.)* Create the collections in section 5 and seed them from the old files. The old sources were removed in phase 1; read them from `main` (`git show main:src/routes/resume.svelte`, `git show main:static/profile.json`).
-3. **Core pages.** Base layout, header, home, résumé with print styles and ticker, analytics.
+3. **Core pages.** *(Done 2026-10-06.)* Base layout, header, home, résumé with print styles and ticker, analytics.
 4. **Payments.** D1 migration, `/pay` routes, both providers against their sandboxes, webhooks, admin invoice page.
 5. **Remaining pages.** Whichever proposed pages the owner confirms.
 6. **Deploy.** Cloudflare resources, secrets, webhook endpoints registered with Stripe and PayPal, then DNS cutover. The owner does the cutover and supplies live credentials.
@@ -205,10 +213,10 @@ Build without live credentials first. Everything through phase 4 can be done and
 ## 9. Open questions for the owner
 
 1. **Proposed pages:** which of `/projects`, `/services`, `/contact`, `/blog` to build.
-2. **Home page:** keep the highlighted-JSON presentation, or redesign it.
+2. ~~**Home page:** keep the highlighted-JSON presentation, or redesign it.~~ Resolved: keep it for now.
 3. **Admin protection for `/admin/invoices`:** Cloudflare Access is known to work. Reusing the EmDash admin login would be tidier, but whether EmDash exposes its session to custom pages has not been checked.
 4. ~~**`socialinks/`:** move to its own repo, or delete.~~ Resolved: deleted on 2026-10-06 (still in git history).
-5. **Profile data:** current location, whether to keep `age`, and current Discord handle. (Portfolio resolved: both lists are correct, merged.)
+5. **Profile data:** current location. (Resolved: portfolio lists merged; age calculated from a birth date; Discord is `antitcb`.)
 6. **Business location:** confirm the business is US-based, since the separate-PayPal decision depends on it.
 7. **Venmo:** enable through PayPal or not.
 8. **Invoice emails:** whether the site should email invoice links and receipts, or Alex sends links himself.

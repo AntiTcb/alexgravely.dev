@@ -2,16 +2,21 @@
 import { getSiteSettings } from "emdash";
 import { createPublicPageContext } from "emdash/page";
 import { EmDashBodyEnd, EmDashBodyStart, EmDashHead } from "emdash/ui";
+import Analytics from "../components/Analytics.astro";
+import Header from "../components/Header.astro";
+import "../styles/global.css";
 
 interface Props {
 	title?: string;
 	description?: string;
+	/** Robots directive, e.g. "noindex" for private pages. */
+	robots?: string;
 }
 
 const settings = await getSiteSettings();
 const siteTitle = settings.title || "Alex Gravely";
-const { title, description = settings.tagline } = Astro.props;
-const fullTitle = title ? `${title} — ${siteTitle}` : siteTitle;
+const { title, description = settings.tagline, robots = "index, nofollow" } = Astro.props;
+const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
 
 const pageCtx = createPublicPageContext({
 	Astro,
@@ -29,19 +34,40 @@ const pageCtx = createPublicPageContext({
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="author" content="Alex Gravely" />
+		<meta name="robots" content={robots} />
 		<title>{fullTitle}</title>
 		<link rel="icon" href="/favicon.ico" sizes="any" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
 		<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<link rel="manifest" href="/site.webmanifest" />
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;500&display=swap"
+		/>
 		<EmDashHead page={pageCtx} />
+		<Analytics />
 	</head>
 	<body>
 		<EmDashBodyStart page={pageCtx} />
+		<Header />
 		<main>
 			<slot />
 		</main>
 		<EmDashBodyEnd page={pageCtx} />
 	</body>
 </html>
+
+<style>
+	main {
+		padding: 1rem;
+	}
+	@media (max-width: 599px) {
+		main {
+			padding: 0.5rem;
+		}
+	}
+</style>

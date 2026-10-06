@@ -1,0 +1,58 @@
+:root {
+	--text-primary: #48c848;
+	--text-secondary: lightgreen;
+	--bg-primary: rgb(0, 0, 0);
+	--bg-secondary: rgb(50, 50, 50);
+	--code-bg: #1c1b1b;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	font-size: 16pt;
+	font-family: "Fira Mono", monospace;
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	min-height: 100vh;
+	background-color: var(--bg-secondary);
+	color: var(--text-primary);
+	text-shadow: 5px 3px 5px black;
+	line-height: 1.4;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-variant: small-caps;
+	line-height: 1.2;
+}
+
+a {
+	color: var(--text-primary);
+}
+
+img,
+svg {
+	display: block;
+	max-width: 100%;
+}
+
+button {
+	font: inherit;
+	color: inherit;
+}
+
+ul {
+	list-style: none;
+}

@@ -52,9 +52,9 @@
 					"type": "string"
 				},
 				{
-					"slug": "age",
-					"label": "Age",
-					"type": "integer"
+					"slug": "birth_date",
+					"label": "Birth date (age is calculated from this; the date itself is not shown)",
+					"type": "datetime"
 				},
 				{
 					"slug": "email",
@@ -451,11 +451,11 @@
 					"tagline": "Freelance and Professional Full-Stack Developer",
 					"summary": "Critical thinker with a knack for debugging problems. Ambitious and eager to learn new things. Jack of all trades, able to template a website design, construct the backend, and set up continuous deployment.",
 					"location": "Roanoke, VA",
-					"age": 31,
+					"birth_date": "1994-03-10T00:00:00.000Z",
 					"email": "antitcb@gmail.com",
 					"github": "https://github.com/AntiTcb",
 					"linkedin": "https://www.linkedin.com/in/antitcb/",
-					"discord": "AntiTcb#0001",
+					"discord": "antitcb",
 					"career_start": "2008-01-01T00:00:00.000Z",
 					"freelance_title": "Freelance Full Stack Developer",
 					"freelance_since": "2013-07-01T00:00:00.000Z",

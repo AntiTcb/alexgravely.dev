@@ -31,7 +31,7 @@ Everything on the site comes from EmDash collections: `profile` (one entry, slug
 
 ## Components
 
-Site components can be Astro or Svelte 5 (`.svelte`, in `src/components/`). React is installed only for the EmDash admin.
+Site components can be Astro or Svelte 5 (`.svelte`, in `src/components/`). React is installed only for the EmDash admin. `Ticker.svelte` (the résumé's live counter) is an example of a Svelte island.
 
 ## Scripts
 
@@ -53,5 +53,7 @@ Site components can be Astro or Svelte 5 (`.svelte`, in `src/components/`). Reac
 | `src/live.config.ts` | Registers EmDash content with Astro |
 | `seed/seed.json` | EmDash collections and their initial content |
 | `src/lib/content.ts` | Content query helpers |
+| `src/lib/dates.ts`, `src/lib/json-highlight.ts` | Date formatting and age; home page JSON highlighting |
+| `src/styles/global.css` | Theme variables and base styles |
 | `src/components/` | Site components (Astro or Svelte) |
 | `emdash-env.d.ts` | Generated content types (rewritten by the dev server) |
