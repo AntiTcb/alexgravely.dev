@@ -1,9 +1,16 @@
 ---
 // Placeholder until the home page is built (rebuild plan, phase 3).
+import PortfolioList from "../components/PortfolioList.svelte";
 import Base from "../layouts/Base.astro";
+import { getPortfolio, getProfile } from "../lib/content";
+
+const [profile, portfolio] = await Promise.all([getProfile(), getPortfolio()]);
 ---
 
 <Base>
-	<h1>Alex Gravely</h1>
+	<h1>{profile?.data.name ?? "Alex Gravely"}</h1>
+	{profile?.data.tagline && <p>{profile.data.tagline}</p>}
 	<p>The new site is under construction.</p>
+	<h2>Portfolio</h2>
+	<PortfolioList sites={portfolio} />
 </Base>

@@ -69,9 +69,9 @@ Settled by the owner: home, résumé, and the pay flow. The rest were proposed a
 | Route | Status | Source of content |
 |---|---|---|
 | `/` | Settled | Profile entry in EmDash. |
-| `/resume` | Settled | `jobs`, `skills`, `education`, `certifications`, `projects` collections. Keep the print stylesheet behavior: hide nav and icons, print link URLs, list skills as text. Keep the live ticker as a small client script with the start date as a CMS field. |
+| `/resume` | Settled | `profile`, `jobs`, `skills`, `education`, `portfolio`, `certifications`, `open_source` collections. Keep the print stylesheet behavior: hide nav and icons, print link URLs, list skills as text. Keep the live ticker as a small client script with the start date as a CMS field. |
 | `/pay/[token]` and `/pay` | Settled | Invoice tables in D1 (section 6). |
-| `/projects`, `/projects/[slug]` | Proposed | `projects` collection, with room for longer write-ups. |
+| `/projects`, `/projects/[slug]` | Proposed | `portfolio` collection, which has a long write-up field. |
 | `/services` | Proposed | What Alex offers freelance, linking to contact. |
 | `/contact` | Proposed | Form handled by a Worker endpoint. |
 | `/blog` | Proposed, optional | EmDash posts. |
@@ -88,11 +88,20 @@ Move all hardcoded résumé and profile content into the CMS so nothing requires
 | `jobs` | title, company, start date, end date (empty means present), company description, responsibilities list, sort order |
 | `skills` | name, category (language, framework, system), icon, sort order |
 | `education` | program, school, dates, completed flag, coursework |
-| `projects` | name, URL, summary, tech used, role, optional long write-up, featured flag |
+| `portfolio` | name, URL, summary, role, tech used, résumé bullet points, featured flag, show-on-résumé flag, sort order, optional long write-up. Replaces the earlier `projects` idea: one collection drives every portfolio list on the site. |
 | `certifications` | area (for example Yu-Gi-Oh! TCG, Riftbound), credential, since date, notes, optional link |
 | `open_source` | project, role, description |
 
 Seed these from `resume.svelte` and `profile.json`. Where the two disagree, the résumé is the more recently edited source (last commit 2026-09-08, "Update side projects"), but confirm with the owner.
+
+**Done in phase 2 (2026-10-06):** all seven collections are defined in `seed/seed.json` and seeded with the old content. The owner confirmed both portfolio lists are correct, so `portfolio` holds the merged nine sites (the résumé's grouped entries, YugiTube/RiftTube and DragonForce/Herman Li, are separate entries). Notes:
+
+- Pages read the portfolio only through `getPortfolio()` in `src/lib/content.ts`, so a new CMS entry shows up everywhere.
+- Genesys Format came only from `profile.json` and has no summary, role, or bullet points yet; fill them in through the admin.
+- Location, `age`, and the Discord tag were carried over unchanged from `profile.json` (open question 5 is still partly open).
+- The section-level dates on the résumé are fields: "Freelance" heading and start date on `profile`; TCG judging and open source start dates come from the earliest `since` among their entries.
+- `profile` is an ordinary collection with one entry, slug `main`.
+- Svelte (`@astrojs/svelte`) is installed for site components, at the owner's request. React remains for the EmDash admin.
 
 ## 6. Decisions: payments
 
@@ -177,7 +186,7 @@ CREATE TABLE payment_events (
 Build without live credentials first. Everything through phase 4 can be done and tested with placeholders and provider sandboxes.
 
 1. **Scaffold.** *(Done 2026-10-06.)* New Astro project on a branch, Cloudflare adapter, React, EmDash, `wrangler` config with D1 and R2 bindings, local dev running. Remove the SvelteKit source and `netlify.toml` once the new project builds.
-2. **Content model.** Create the collections in section 5 and seed them from the old files. The old sources were removed in phase 1; read them from `main` (`git show main:src/routes/resume.svelte`, `git show main:static/profile.json`).
+2. **Content model.** *(Done 2026-10-06.)* Create the collections in section 5 and seed them from the old files. The old sources were removed in phase 1; read them from `main` (`git show main:src/routes/resume.svelte`, `git show main:static/profile.json`).
 3. **Core pages.** Base layout, header, home, résumé with print styles and ticker, analytics.
 4. **Payments.** D1 migration, `/pay` routes, both providers against their sandboxes, webhooks, admin invoice page.
 5. **Remaining pages.** Whichever proposed pages the owner confirms.
@@ -199,7 +208,7 @@ Build without live credentials first. Everything through phase 4 can be done and
 2. **Home page:** keep the highlighted-JSON presentation, or redesign it.
 3. **Admin protection for `/admin/invoices`:** Cloudflare Access is known to work. Reusing the EmDash admin login would be tidier, but whether EmDash exposes its session to custom pages has not been checked.
 4. ~~**`socialinks/`:** move to its own repo, or delete.~~ Resolved: deleted on 2026-10-06 (still in git history).
-5. **Profile data:** current location, whether to keep `age`, current Discord handle, and which portfolio list is correct.
+5. **Profile data:** current location, whether to keep `age`, and current Discord handle. (Portfolio resolved: both lists are correct, merged.)
 6. **Business location:** confirm the business is US-based, since the separate-PayPal decision depends on it.
 7. **Venmo:** enable through PayPal or not.
 8. **Invoice emails:** whether the site should email invoice links and receipts, or Alex sends links himself.

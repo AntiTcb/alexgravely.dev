@@ -8,7 +8,1214 @@
 	},
 	"settings": {
 		"title": "Alex Gravely",
-		"tagline": "Software developer"
+		"tagline": "Freelance and Professional Full-Stack Developer"
 	},
-	"collections": []
+	"collections": [
+		{
+			"slug": "profile",
+			"label": "Profile",
+			"labelSingular": "Profile",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "full_name",
+					"label": "Full name (résumé heading)",
+					"type": "string"
+				},
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string"
+				},
+				{
+					"slug": "tagline",
+					"label": "Tagline",
+					"type": "string"
+				},
+				{
+					"slug": "summary",
+					"label": "Summary",
+					"type": "text"
+				},
+				{
+					"slug": "location",
+					"label": "Location",
+					"type": "string"
+				},
+				{
+					"slug": "age",
+					"label": "Age",
+					"type": "integer"
+				},
+				{
+					"slug": "email",
+					"label": "Email",
+					"type": "string"
+				},
+				{
+					"slug": "github",
+					"label": "GitHub URL",
+					"type": "url"
+				},
+				{
+					"slug": "linkedin",
+					"label": "LinkedIn URL",
+					"type": "url"
+				},
+				{
+					"slug": "discord",
+					"label": "Discord",
+					"type": "string"
+				},
+				{
+					"slug": "career_start",
+					"label": "Career start date (drives the résumé ticker)",
+					"type": "datetime"
+				},
+				{
+					"slug": "freelance_title",
+					"label": "Freelance heading",
+					"type": "string"
+				},
+				{
+					"slug": "freelance_since",
+					"label": "Freelance since",
+					"type": "datetime"
+				},
+				{
+					"slug": "trivia",
+					"label": "Trivia",
+					"type": "json"
+				}
+			]
+		},
+		{
+			"slug": "jobs",
+			"label": "Jobs",
+			"labelSingular": "Job",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Job title",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "company",
+					"label": "Company",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "start_date",
+					"label": "Start date",
+					"type": "datetime",
+					"required": true
+				},
+				{
+					"slug": "end_date",
+					"label": "End date (leave empty if current)",
+					"type": "datetime"
+				},
+				{
+					"slug": "company_description",
+					"label": "Company description",
+					"type": "text"
+				},
+				{
+					"slug": "responsibilities",
+					"label": "Responsibilities",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "text",
+								"label": "Responsibility",
+								"type": "text",
+								"required": true
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			"slug": "skills",
+			"label": "Skills",
+			"labelSingular": "Skill",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "category",
+					"label": "Category",
+					"type": "select",
+					"required": true,
+					"validation": {
+						"options": [
+							"language",
+							"framework",
+							"system"
+						]
+					}
+				},
+				{
+					"slug": "icon_url",
+					"label": "Icon URL",
+					"type": "url"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "education",
+			"label": "Education",
+			"labelSingular": "Education",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "program",
+					"label": "Program",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "school",
+					"label": "School",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "start_date",
+					"label": "Start date",
+					"type": "datetime"
+				},
+				{
+					"slug": "end_date",
+					"label": "End date",
+					"type": "datetime"
+				},
+				{
+					"slug": "completed",
+					"label": "Completed",
+					"type": "boolean"
+				},
+				{
+					"slug": "coursework",
+					"label": "Coursework",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "text",
+								"label": "Course",
+								"type": "text",
+								"required": true
+							}
+						]
+					}
+				}
+			]
+		},
+		{
+			"slug": "portfolio",
+			"label": "Portfolio",
+			"labelSingular": "Portfolio site",
+			"supports": [
+				"drafts",
+				"revisions",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "name",
+					"label": "Name",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "url",
+					"label": "URL",
+					"type": "url",
+					"required": true
+				},
+				{
+					"slug": "summary",
+					"label": "Summary",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "role",
+					"label": "Role",
+					"type": "string"
+				},
+				{
+					"slug": "tech",
+					"label": "Tech used",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "name",
+								"label": "Technology",
+								"type": "string",
+								"required": true
+							}
+						]
+					}
+				},
+				{
+					"slug": "highlights",
+					"label": "Résumé bullet points",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "text",
+								"label": "Bullet",
+								"type": "text",
+								"required": true
+							}
+						]
+					}
+				},
+				{
+					"slug": "featured",
+					"label": "Featured",
+					"type": "boolean"
+				},
+				{
+					"slug": "show_on_resume",
+					"label": "Show on résumé",
+					"type": "boolean"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer"
+				},
+				{
+					"slug": "writeup",
+					"label": "Long write-up",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "certifications",
+			"label": "Certifications",
+			"labelSingular": "Certification",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "area",
+					"label": "Area",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "credential",
+					"label": "Credential",
+					"type": "text",
+					"required": true
+				},
+				{
+					"slug": "since",
+					"label": "Since",
+					"type": "datetime"
+				},
+				{
+					"slug": "notes",
+					"label": "Notes",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "text",
+								"label": "Note",
+								"type": "text",
+								"required": true
+							}
+						]
+					}
+				},
+				{
+					"slug": "link_url",
+					"label": "Link URL",
+					"type": "url"
+				},
+				{
+					"slug": "link_label",
+					"label": "Link label",
+					"type": "string"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		},
+		{
+			"slug": "open_source",
+			"label": "Open source",
+			"labelSingular": "Open source project",
+			"supports": [
+				"drafts",
+				"revisions"
+			],
+			"fields": [
+				{
+					"slug": "project",
+					"label": "Project",
+					"type": "string",
+					"required": true
+				},
+				{
+					"slug": "role",
+					"label": "Role",
+					"type": "string"
+				},
+				{
+					"slug": "since",
+					"label": "Since",
+					"type": "datetime"
+				},
+				{
+					"slug": "description",
+					"label": "Description",
+					"type": "repeater",
+					"validation": {
+						"subFields": [
+							{
+								"slug": "text",
+								"label": "Bullet",
+								"type": "text",
+								"required": true
+							}
+						]
+					}
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort order",
+					"type": "integer"
+				}
+			]
+		}
+	],
+	"content": {
+		"profile": [
+			{
+				"id": "main",
+				"slug": "main",
+				"status": "published",
+				"data": {
+					"name": "Alex Gravely",
+					"full_name": "Kenneth \"Alex\" Gravely",
+					"title": "Full Stack Developer",
+					"tagline": "Freelance and Professional Full-Stack Developer",
+					"summary": "Critical thinker with a knack for debugging problems. Ambitious and eager to learn new things. Jack of all trades, able to template a website design, construct the backend, and set up continuous deployment.",
+					"location": "Roanoke, VA",
+					"age": 31,
+					"email": "antitcb@gmail.com",
+					"github": "https://github.com/AntiTcb",
+					"linkedin": "https://www.linkedin.com/in/antitcb/",
+					"discord": "AntiTcb#0001",
+					"career_start": "2008-01-01T00:00:00.000Z",
+					"freelance_title": "Freelance Full Stack Developer",
+					"freelance_since": "2013-07-01T00:00:00.000Z",
+					"trivia": {
+						"dislikes": [
+							"PHP",
+							"Using tab as your indentation",
+							"VIM",
+							"Tomatoes"
+						],
+						"favourites": {
+							"animal": "Penguin",
+							"anime": [
+								"Seven Deadly Sins",
+								"Attack on Titan",
+								"Dragon Ball",
+								"Soul Eater",
+								"Death Note",
+								"Jujustu Kaisen",
+								"Chainsaw Man",
+								"Demon Slayer",
+								"Spy x Family",
+								"Naruto",
+								"One Punch Man",
+								"My Hero Academia"
+							],
+							"car": "2017 Chevrolet Volt",
+							"editor": "Cursor",
+							"food": "Filet mignon, medium rare",
+							"movies": [
+								"Spider-Man: Into the Spider-Verse",
+								"Spider-Man: No Way Home",
+								"Dragon Ball Super: Broly"
+							],
+							"restaurant": "Chick-Fil-A",
+							"shows": [
+								"Bojack Horseman",
+								"Avatar the Last Airbender",
+								"Supernatural",
+								"The Umbrella Academy",
+								"The Good Place",
+								"Parks & Recreation",
+								"The Office",
+								"Community"
+							],
+							"tea": "Constant Comment by Bigelow",
+							"video_games": [
+								"World of Warcraft",
+								"League of Legends",
+								"Old School RuneScape",
+								"Team Fortress 2"
+							]
+						}
+					}
+				}
+			}
+		],
+		"jobs": [
+			{
+				"id": "pro-inc",
+				"slug": "pro-inc",
+				"status": "published",
+				"data": {
+					"title": "Software Developer",
+					"company": "Professional Rehabilitative Options, INC.",
+					"start_date": "2022-01-01T00:00:00.000Z",
+					"company_description": "PRO INC. provides Medical Case Manager solutions, maintaining efficient and effective oversight on workplace injuries.",
+					"responsibilities": [
+						{
+							"text": "Maintain and develop the company's internal web application for Field Case Management, using NET Core, Svelte, SQL Server, and Azure."
+						}
+					]
+				}
+			},
+			{
+				"id": "ziiva",
+				"slug": "ziiva",
+				"status": "published",
+				"data": {
+					"title": "Software Developer / Technical Support",
+					"company": "Ziiva",
+					"start_date": "2018-01-01T00:00:00.000Z",
+					"end_date": "2022-01-01T00:00:00.000Z",
+					"company_description": "Ziiva provides SAAS through Prosperity, their Online Learning Management Platform, simplifying the needs of managing training employees for enterprise corporations or selling online courses for people looking to start up an online business.",
+					"responsibilities": [
+						{
+							"text": "Provided implementation, consultation, configuration, and technical support to existing customers on customizations to their site instance to meet their training, reporting, and ecommerce needs."
+						},
+						{
+							"text": "Maintained multi-tenant ColdFusion application, using HTML/CSS/JS to handle client website branding, ColdFusion for functionality changes, server-side maintenance in IIS, and database management in MSSQL."
+						},
+						{
+							"text": "Developed several internal tools with .NET for simplifying large scriptable tasks needed for client implementation or modification."
+						},
+						{
+							"text": "Provided technical support via phone and email whenever an issue with the site arose, identifying problems through meticulous debugging, and seeing a fix through to the end, confirming the issue was resolved through testing."
+						}
+					]
+				}
+			},
+			{
+				"id": "star-city-games",
+				"slug": "star-city-games",
+				"status": "published",
+				"data": {
+					"title": "Programming Associate",
+					"company": "Star City Games",
+					"start_date": "2014-10-01T00:00:00.000Z",
+					"end_date": "2015-03-01T00:00:00.000Z",
+					"company_description": "Star City Games operates the largest Magic the Gathering ecommerce website.",
+					"responsibilities": [
+						{
+							"text": "Self taught VB.NET and C# for development and reimplementation of internal applications necessary for day to day operations."
+						},
+						{
+							"text": "Maintain internal card databases using MS Access and MySQL."
+						}
+					]
+				}
+			},
+			{
+				"id": "roanoke-college",
+				"slug": "roanoke-college",
+				"status": "published",
+				"data": {
+					"title": "Web Developer",
+					"company": "Roanoke College (Work Study)",
+					"start_date": "2013-05-01T00:00:00.000Z",
+					"end_date": "2013-09-01T00:00:00.000Z",
+					"company_description": "Offered as a Work Study option, Roanoke College provides jobs in their IT department for students to get early experience in a corporate environment and cultivate their skills with hands on experience while earning their degrees.",
+					"responsibilities": [
+						{
+							"text": "Learned and developed a full stack setup for intra-department campus activities; HTML, CSS, JavaScript for the frontend, ColdFusion for the server-side language, and MSSQL for the database."
+						},
+						{
+							"text": "Assisted with setup of new campus-owned computers for student and faculty use by installing Windows and configuring for restricted use."
+						}
+					]
+				}
+			}
+		],
+		"skills": [
+			{
+				"id": "csharp",
+				"slug": "csharp",
+				"status": "published",
+				"data": {
+					"name": "C#",
+					"category": "language",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg",
+					"sort_order": 10
+				}
+			},
+			{
+				"id": "coldfusion",
+				"slug": "coldfusion",
+				"status": "published",
+				"data": {
+					"name": "ColdFusion",
+					"category": "language",
+					"icon_url": "https://upload.wikimedia.org/wikipedia/commons/6/63/Adobe_ColdFusion_10_icon.png",
+					"sort_order": 20
+				}
+			},
+			{
+				"id": "javascript",
+				"slug": "javascript",
+				"status": "published",
+				"data": {
+					"name": "JavaScript",
+					"category": "language",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg",
+					"sort_order": 30
+				}
+			},
+			{
+				"id": "html",
+				"slug": "html",
+				"status": "published",
+				"data": {
+					"name": "HTML",
+					"category": "language",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original-wordmark.svg",
+					"sort_order": 40
+				}
+			},
+			{
+				"id": "css",
+				"slug": "css",
+				"status": "published",
+				"data": {
+					"name": "CSS",
+					"category": "language",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-plain-wordmark.svg",
+					"sort_order": 50
+				}
+			},
+			{
+				"id": "graphql",
+				"slug": "graphql",
+				"status": "published",
+				"data": {
+					"name": "GraphQL",
+					"category": "language",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/graphql/graphql-plain-wordmark.svg",
+					"sort_order": 60
+				}
+			},
+			{
+				"id": "mysql",
+				"slug": "mysql",
+				"status": "published",
+				"data": {
+					"name": "MySQL",
+					"category": "language",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original-wordmark.svg",
+					"sort_order": 70
+				}
+			},
+			{
+				"id": "postgresql",
+				"slug": "postgresql",
+				"status": "published",
+				"data": {
+					"name": "PostgreSQL",
+					"category": "language",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original-wordmark.svg",
+					"sort_order": 80
+				}
+			},
+			{
+				"id": "mssql",
+				"slug": "mssql",
+				"status": "published",
+				"data": {
+					"name": "MSSQL",
+					"category": "language",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/microsoftsqlserver/microsoftsqlserver-plain-wordmark.svg",
+					"sort_order": 90
+				}
+			},
+			{
+				"id": "php",
+				"slug": "php",
+				"status": "published",
+				"data": {
+					"name": "PHP",
+					"category": "language",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg",
+					"sort_order": 100
+				}
+			},
+			{
+				"id": "wordpress",
+				"slug": "wordpress",
+				"status": "published",
+				"data": {
+					"name": "WordPress",
+					"category": "framework",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/wordpress/wordpress-original.svg",
+					"sort_order": 110
+				}
+			},
+			{
+				"id": "dotnet-core",
+				"slug": "dotnet-core",
+				"status": "published",
+				"data": {
+					"name": ".NET Core",
+					"category": "framework",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/dotnetcore/dotnetcore-original.svg",
+					"sort_order": 120
+				}
+			},
+			{
+				"id": "git",
+				"slug": "git",
+				"status": "published",
+				"data": {
+					"name": "Git",
+					"category": "framework",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original-wordmark.svg",
+					"sort_order": 130
+				}
+			},
+			{
+				"id": "jquery",
+				"slug": "jquery",
+				"status": "published",
+				"data": {
+					"name": "jQuery",
+					"category": "framework",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/jquery/jquery-original-wordmark.svg",
+					"sort_order": 140
+				}
+			},
+			{
+				"id": "nginx",
+				"slug": "nginx",
+				"status": "published",
+				"data": {
+					"name": "NGINX",
+					"category": "framework",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nginx/nginx-original.svg",
+					"sort_order": 150
+				}
+			},
+			{
+				"id": "react",
+				"slug": "react",
+				"status": "published",
+				"data": {
+					"name": "React",
+					"category": "framework",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original-wordmark.svg",
+					"sort_order": 160
+				}
+			},
+			{
+				"id": "svelte",
+				"slug": "svelte",
+				"status": "published",
+				"data": {
+					"name": "Svelte",
+					"category": "framework",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/svelte/svelte-original.svg",
+					"sort_order": 170
+				}
+			},
+			{
+				"id": "less",
+				"slug": "less",
+				"status": "published",
+				"data": {
+					"name": "LESS",
+					"category": "framework",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/less/less-plain-wordmark.svg",
+					"sort_order": 180
+				}
+			},
+			{
+				"id": "sass",
+				"slug": "sass",
+				"status": "published",
+				"data": {
+					"name": "SASS/SCSS",
+					"category": "framework",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/sass/sass-original.svg",
+					"sort_order": 190
+				}
+			},
+			{
+				"id": "windows",
+				"slug": "windows",
+				"status": "published",
+				"data": {
+					"name": "Windows",
+					"category": "system",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/windows8/windows8-original.svg",
+					"sort_order": 200
+				}
+			},
+			{
+				"id": "ubuntu",
+				"slug": "ubuntu",
+				"status": "published",
+				"data": {
+					"name": "Ubuntu",
+					"category": "system",
+					"icon_url": "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/ubuntu/ubuntu-plain-wordmark.svg",
+					"sort_order": 210
+				}
+			}
+		],
+		"education": [
+			{
+				"id": "roanoke-college-cs",
+				"slug": "roanoke-college-cs",
+				"status": "published",
+				"data": {
+					"program": "Applied Computer Science",
+					"school": "Roanoke College",
+					"start_date": "2012-08-01T00:00:00.000Z",
+					"end_date": "2013-09-01T00:00:00.000Z",
+					"completed": false,
+					"coursework": [
+						{
+							"text": "Fundamentals of CS (Python)"
+						},
+						{
+							"text": "Data Structures and Algorithms"
+						},
+						{
+							"text": "Computer Security"
+						},
+						{
+							"text": "System Administration"
+						}
+					]
+				}
+			}
+		],
+		"portfolio": [
+			{
+				"id": "ygorganization",
+				"slug": "ygorganization",
+				"status": "published",
+				"data": {
+					"name": "YGOrganization",
+					"url": "https://ygorganization.com",
+					"featured": true,
+					"show_on_resume": true,
+					"sort_order": 10,
+					"summary": "Trading card game news and strategy site.",
+					"highlights": [
+						{
+							"text": "Full stack developer for trading card game niche WordPress site, managing upkeep of front-end design and server-side stability, using WordPress, Svelte, PHP, MySQL, NGINX, and Ubuntu."
+						}
+					],
+					"tech": [
+						{
+							"name": "WordPress"
+						},
+						{
+							"name": "Svelte"
+						},
+						{
+							"name": "PHP"
+						},
+						{
+							"name": "MySQL"
+						},
+						{
+							"name": "NGINX"
+						},
+						{
+							"name": "Ubuntu"
+						}
+					],
+					"role": "Full stack developer"
+				}
+			},
+			{
+				"id": "yugipedia",
+				"slug": "yugipedia",
+				"status": "published",
+				"data": {
+					"name": "Yugipedia",
+					"url": "https://yugipedia.com",
+					"featured": true,
+					"show_on_resume": true,
+					"sort_order": 20,
+					"summary": "The Yu-Gi-Oh! wiki.",
+					"highlights": [
+						{
+							"text": "Maintainer for the Yu-Gi-Oh! wiki, managing server-side stability, using PHP, MySQL, NGINX, and Ubuntu."
+						}
+					],
+					"tech": [
+						{
+							"name": "PHP"
+						},
+						{
+							"name": "MySQL"
+						},
+						{
+							"name": "NGINX"
+						},
+						{
+							"name": "Ubuntu"
+						}
+					],
+					"role": "Maintainer"
+				}
+			},
+			{
+				"id": "yugitube",
+				"slug": "yugitube",
+				"status": "published",
+				"data": {
+					"name": "YugiTube",
+					"url": "https://yugitube.com",
+					"featured": true,
+					"show_on_resume": true,
+					"sort_order": 30,
+					"summary": "YouTube index website for Yu-Gi-Oh!.",
+					"highlights": [
+						{
+							"text": "Developer of a YouTube index website for Yu-Gi-Oh!, built with SvelteKit and Cloudflare."
+						}
+					],
+					"tech": [
+						{
+							"name": "SvelteKit"
+						},
+						{
+							"name": "Cloudflare"
+						}
+					],
+					"role": "Developer"
+				}
+			},
+			{
+				"id": "rifttube",
+				"slug": "rifttube",
+				"status": "published",
+				"data": {
+					"name": "RiftTube",
+					"url": "https://rifttube.com",
+					"featured": true,
+					"show_on_resume": true,
+					"sort_order": 40,
+					"summary": "YouTube index website for Riftbound.",
+					"highlights": [
+						{
+							"text": "Developer of a YouTube index website for Riftbound, built with SvelteKit and Cloudflare."
+						}
+					],
+					"tech": [
+						{
+							"name": "SvelteKit"
+						},
+						{
+							"name": "Cloudflare"
+						}
+					],
+					"role": "Developer"
+				}
+			},
+			{
+				"id": "genesysformat",
+				"slug": "genesysformat",
+				"status": "published",
+				"data": {
+					"name": "Genesys Format",
+					"url": "https://genesysformat.com",
+					"featured": true,
+					"show_on_resume": true,
+					"sort_order": 50
+				}
+			},
+			{
+				"id": "dragonforce",
+				"slug": "dragonforce",
+				"status": "published",
+				"data": {
+					"name": "DragonForce",
+					"url": "https://dragonforce.com",
+					"featured": true,
+					"show_on_resume": true,
+					"sort_order": 60,
+					"summary": "WordPress site for the metal band DragonForce.",
+					"highlights": [
+						{
+							"text": "Maintainer for WordPress site for the metal band DragonForce. Managing upkeep of front-end design and server-side stability, using HTML, CSS, JavaScript, PHP, MySQL, NGINX, and Ubuntu."
+						}
+					],
+					"tech": [
+						{
+							"name": "WordPress"
+						},
+						{
+							"name": "HTML"
+						},
+						{
+							"name": "CSS"
+						},
+						{
+							"name": "JavaScript"
+						},
+						{
+							"name": "PHP"
+						},
+						{
+							"name": "MySQL"
+						},
+						{
+							"name": "NGINX"
+						},
+						{
+							"name": "Ubuntu"
+						}
+					],
+					"role": "Maintainer"
+				}
+			},
+			{
+				"id": "herman-li",
+				"slug": "herman-li",
+				"status": "published",
+				"data": {
+					"name": "Herman Li",
+					"url": "https://hermanli.com",
+					"featured": true,
+					"show_on_resume": true,
+					"sort_order": 70,
+					"summary": "Personal website of DragonForce guitarist Herman Li.",
+					"highlights": [
+						{
+							"text": "Maintainer for the personal website of DragonForce guitarist Herman Li. Managing upkeep of front-end design and server-side stability, using HTML, CSS, JavaScript, PHP, MySQL, NGINX, and Ubuntu."
+						}
+					],
+					"tech": [
+						{
+							"name": "WordPress"
+						},
+						{
+							"name": "HTML"
+						},
+						{
+							"name": "CSS"
+						},
+						{
+							"name": "JavaScript"
+						},
+						{
+							"name": "PHP"
+						},
+						{
+							"name": "MySQL"
+						},
+						{
+							"name": "NGINX"
+						},
+						{
+							"name": "Ubuntu"
+						}
+					],
+					"role": "Maintainer"
+				}
+			},
+			{
+				"id": "herosync",
+				"slug": "herosync",
+				"status": "published",
+				"data": {
+					"name": "HeroSync",
+					"url": "https://herosync.com",
+					"featured": true,
+					"show_on_resume": true,
+					"sort_order": 80,
+					"summary": "React front end over a headless WordPress install, plus game development support.",
+					"highlights": [
+						{
+							"text": "Maintainer of React front-end website, powered by a headless WordPress installation."
+						},
+						{
+							"text": "Assist in development of game, contributing to the Unity game engine implementation, and providing ASP.NET Core API applications for internal usage."
+						}
+					],
+					"tech": [
+						{
+							"name": "React"
+						},
+						{
+							"name": "WordPress"
+						},
+						{
+							"name": "Unity"
+						},
+						{
+							"name": "ASP.NET Core"
+						}
+					],
+					"role": "Maintainer and developer"
+				}
+			},
+			{
+				"id": "loudon-avenue-cc",
+				"slug": "loudon-avenue-cc",
+				"status": "published",
+				"data": {
+					"name": "Loudon Avenue Christian Church",
+					"url": "https://loudonavenuecc.org",
+					"featured": true,
+					"show_on_resume": true,
+					"sort_order": 90,
+					"summary": "WordPress site for a local church.",
+					"highlights": [
+						{
+							"text": "Sole maintainer of WordPress site for a local church."
+						}
+					],
+					"tech": [
+						{
+							"name": "WordPress"
+						}
+					],
+					"role": "Sole maintainer"
+				}
+			}
+		],
+		"certifications": [
+			{
+				"id": "yugioh-tcg",
+				"slug": "yugioh-tcg",
+				"status": "published",
+				"data": {
+					"area": "Yu-Gi-Oh! TCG",
+					"credential": "RC-1, RC-2, PC-1, and DC-1 certified Judge for the Yu-Gi-Oh! Trading Card Game.",
+					"since": "2012-07-01T00:00:00.000Z",
+					"notes": [
+						{
+							"text": "Led various teams of judges focusing on floor control, deck integrity, livestream broadcast, and other aspects of the tournament."
+						},
+						{
+							"text": "Have written custom software to aid in judging processes to streamline workflows and improve productivity."
+						}
+					],
+					"link_url": "https://docs.google.com/spreadsheets/d/1MDqwCQhULFx0_G5jBW2hy81xULWZFAPD-2ZsjHx1-vM/edit?gid=0#gid=0",
+					"link_label": "Full judging history spreadsheet",
+					"sort_order": 10
+				}
+			},
+			{
+				"id": "riftbound",
+				"slug": "riftbound",
+				"status": "published",
+				"data": {
+					"area": "Riftbound",
+					"credential": "Level 1 Certified Riftbound Judge.",
+					"since": "2025-12-01T00:00:00.000Z",
+					"sort_order": 20
+				}
+			}
+		],
+		"open_source": [
+			{
+				"id": "discord-net",
+				"slug": "discord-net",
+				"status": "published",
+				"data": {
+					"project": "Discord.NET",
+					"role": "Discord Bot Developer",
+					"since": "2016-06-01T00:00:00.000Z",
+					"description": [
+						{
+							"text": "Developer of four Discord Bot Applications written in C# to aid in community engagement for Yu-Gi-Oh, RuneScape, World of Warcraft, and webhook management for the YGOrganization/Cardfight Coalition websites."
+						},
+						{
+							"text": "Contributor and repository assistant manager for the Discord.NET library, a C# wrapper for the Discord chat application's API."
+						}
+					],
+					"sort_order": 10
+				}
+			},
+			{
+				"id": "cfdocs",
+				"slug": "cfdocs",
+				"status": "published",
+				"data": {
+					"project": "CFDocs",
+					"description": [
+						{
+							"text": "Provided several contributions to CFDocs, a hosted documentation site for the ColdFusion language."
+						}
+					],
+					"sort_order": 20
+				}
+			}
+		]
+	}
 }

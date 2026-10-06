@@ -1,5 +1,6 @@
 import cloudflare from "@astrojs/cloudflare";
 import react from "@astrojs/react";
+import svelte from "@astrojs/svelte";
 import { d1, r2 } from "@emdash-cms/cloudflare";
 import { defineConfig } from "astro/config";
 import emdash from "emdash/astro";
@@ -14,8 +15,9 @@ export default defineConfig({
 		responsiveStyles: true,
 	},
 	integrations: [
-		// React is only used by the EmDash admin UI.
+		// React powers the EmDash admin UI; Svelte is for site components.
 		react(),
+		svelte(),
 		emdash({
 			database: d1({ binding: "DB", session: "auto" }),
 			storage: r2({ binding: "MEDIA" }),

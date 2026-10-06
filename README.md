@@ -21,6 +21,18 @@ pnpm dev
 
 Local D1 and R2 data live in `.wrangler/` and are not committed.
 
+### Loading the seed content locally
+
+On a fresh local database, the dev server creates the collections from `seed/seed.json` but not their entries. To load the entries and sign in without passkey setup, open http://localhost:4321/_emdash/api/setup/dev-bypass?redirect=/_emdash/admin once (dev only). To start over, stop the server and delete `.wrangler/state`.
+
+## Content
+
+Everything on the site comes from EmDash collections: `profile` (one entry, slug `main`), `jobs`, `skills`, `education`, `portfolio`, `certifications`, and `open_source`. Read them through the helpers in `src/lib/content.ts`. Use `getPortfolio()` for every portfolio list so new entries appear everywhere.
+
+## Components
+
+Site components can be Astro or Svelte 5 (`.svelte`, in `src/components/`). React is installed only for the EmDash admin.
+
 ## Scripts
 
 | Command | What it does |
@@ -35,9 +47,11 @@ Local D1 and R2 data live in `.wrangler/` and are not committed.
 
 | Path | What it is |
 |---|---|
-| `astro.config.mjs` | Astro, Cloudflare adapter, React (for the EmDash admin), EmDash with D1 and R2 |
+| `astro.config.mjs` | Astro, Cloudflare adapter, React (for the EmDash admin), Svelte, EmDash with D1 and R2 |
 | `wrangler.jsonc` | Worker name, D1 (`DB`) and R2 (`MEDIA`) bindings, EmDash cron |
 | `src/worker.ts` | Worker entry point (EmDash handler plus scheduled tasks) |
 | `src/live.config.ts` | Registers EmDash content with Astro |
-| `seed/seed.json` | Initial EmDash schema and settings, applied by the setup wizard |
+| `seed/seed.json` | EmDash collections and their initial content |
+| `src/lib/content.ts` | Content query helpers |
+| `src/components/` | Site components (Astro or Svelte) |
 | `emdash-env.d.ts` | Generated content types (rewritten by the dev server) |

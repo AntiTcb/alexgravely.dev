@@ -3,9 +3,153 @@
 
 /// <reference types="emdash/locals" />
 
-import type { BylineSummary, ContentBylineCredit, TaxonomyTerm } from "emdash";
+import type { BylineSummary, ContentBylineCredit, TaxonomyTerm, PortableTextBlock } from "emdash";
+
+export interface Certification {
+  id: string;
+  slug: string | null;
+  status: string;
+  area: string;
+  credential: string;
+  since?: string;
+  notes?: { "text": string }[];
+  link_url?: string;
+  link_label?: string;
+  sort_order?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface Education {
+  id: string;
+  slug: string | null;
+  status: string;
+  program: string;
+  school: string;
+  start_date?: string;
+  end_date?: string;
+  completed?: boolean;
+  coursework?: { "text": string }[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface Job {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  company: string;
+  start_date: string;
+  end_date?: string;
+  company_description?: string;
+  responsibilities?: { "text": string }[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface OpenSource {
+  id: string;
+  slug: string | null;
+  status: string;
+  project: string;
+  role?: string;
+  since?: string;
+  description?: { "text": string }[];
+  sort_order?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface Portfolio {
+  id: string;
+  slug: string | null;
+  status: string;
+  name: string;
+  url: string;
+  summary?: string;
+  role?: string;
+  tech?: { "name": string }[];
+  highlights?: { "text": string }[];
+  featured?: boolean;
+  show_on_resume?: boolean;
+  sort_order?: number;
+  writeup?: PortableTextBlock[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface Profile {
+  id: string;
+  slug: string | null;
+  status: string;
+  name: string;
+  full_name?: string;
+  title?: string;
+  tagline?: string;
+  summary?: string;
+  location?: string;
+  age?: number;
+  email?: string;
+  github?: string;
+  linkedin?: string;
+  discord?: string;
+  career_start?: string;
+  freelance_title?: string;
+  freelance_since?: string;
+  trivia?: unknown;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface Skill {
+  id: string;
+  slug: string | null;
+  status: string;
+  name: string;
+  category: "language" | "framework" | "system";
+  icon_url?: string;
+  sort_order?: number;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  byline?: BylineSummary | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
 
 declare module "emdash" {
   interface EmDashCollections {
+    certifications: Certification;
+    education: Education;
+    jobs: Job;
+    open_source: OpenSource;
+    portfolio: Portfolio;
+    profile: Profile;
+    skills: Skill;
   }
 }
