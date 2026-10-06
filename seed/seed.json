@@ -1,0 +1,14 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "alexgravely.dev",
+		"description": "Alex Gravely's personal site",
+		"author": "Alex Gravely"
+	},
+	"settings": {
+		"title": "Alex Gravely",
+		"tagline": "Software developer"
+	},
+	"collections": []
+}

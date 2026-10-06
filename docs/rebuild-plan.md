@@ -55,7 +55,8 @@ Known content problems to fix during the rebuild:
 EmDash integration notes, to verify against the current docs before use:
 
 - Scaffold reference: `npm create emdash@latest`.
-- Config: `emdash()` from `emdash/astro` in `astro.config.mjs`, with `d1()` from `emdash/db` as the database.
+- Config: `emdash()` from `emdash/astro` in `astro.config.mjs`. **Verified in phase 1:** `d1()` and `r2()` come from `@emdash-cms/cloudflare`, not `emdash/db`. The Worker entry is `src/worker.ts` using `@emdash-cms/cloudflare/worker`, per the official `starter-cloudflare` template (github.com/emdash-cms/templates).
+- **Verified in phase 1:** `@emdash-cms/auth-atproto` is an optional peer and is not installed.
 - A `src/live.config.ts` using `defineLiveCollection` from `astro:content` and `emdashLoader` from `emdash/runtime`.
 - Queries: `getEmDashCollection` and `getEmDashEntry` from `emdash`. Rich text renders with `PortableText` from `emdash/ui`.
 - Types: `npx emdash types`.
@@ -165,7 +166,7 @@ CREATE TABLE payment_events (
 | Name | Kind |
 |---|---|
 | `DB` | D1 binding |
-| `MEDIA` (or the name EmDash expects) | R2 binding |
+| `MEDIA` | R2 binding (name confirmed in phase 1) |
 | `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | Secrets |
 | `PAYPAL_CLIENT_ID` | Variable (public) |
 | `PAYPAL_CLIENT_SECRET`, `PAYPAL_WEBHOOK_ID` | Secrets |
@@ -175,8 +176,8 @@ CREATE TABLE payment_events (
 
 Build without live credentials first. Everything through phase 4 can be done and tested with placeholders and provider sandboxes.
 
-1. **Scaffold.** New Astro project on a branch, Cloudflare adapter, React, EmDash, `wrangler` config with D1 and R2 bindings, local dev running. Remove the SvelteKit source and `netlify.toml` once the new project builds.
-2. **Content model.** Create the collections in section 5 and seed them from the old files.
+1. **Scaffold.** *(Done 2026-10-06.)* New Astro project on a branch, Cloudflare adapter, React, EmDash, `wrangler` config with D1 and R2 bindings, local dev running. Remove the SvelteKit source and `netlify.toml` once the new project builds.
+2. **Content model.** Create the collections in section 5 and seed them from the old files. The old sources were removed in phase 1; read them from `main` (`git show main:src/routes/resume.svelte`, `git show main:static/profile.json`).
 3. **Core pages.** Base layout, header, home, résumé with print styles and ticker, analytics.
 4. **Payments.** D1 migration, `/pay` routes, both providers against their sandboxes, webhooks, admin invoice page.
 5. **Remaining pages.** Whichever proposed pages the owner confirms.

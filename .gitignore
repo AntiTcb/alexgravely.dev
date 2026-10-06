@@ -1,7 +1,16 @@
 .DS_Store
 node_modules
-/build
-/.svelte-kit
-/package
+dist
+.astro
+.emdash/migrations.json
+uploads
+data.db
+.wrangler
 .vscode/
-.netlify/
+
+# Environment / Wrangler secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
