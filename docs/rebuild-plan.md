@@ -30,7 +30,6 @@ A two-page site on a pre-1.0 SvelteKit (Svelte 3, Vite 2, SCSS), deployed to Net
 | `src/lib/Footer.svelte` | Exists but is not mounted. |
 | `static/profile.json` | Profile data and trivia shown on the home page. |
 | `src/app.scss`, `src/variables.scss` | Dark theme, Fira Mono, CSS variables, breakpoint mixin. |
-| `socialinks/` | A separate, unrelated SvelteKit + Tailwind link-tree page (galacticatt.com). |
 | `netlify.toml` | Netlify build config (Node 14). |
 
 Known content problems to fix during the rebuild:
@@ -198,7 +197,7 @@ Build without live credentials first. Everything through phase 4 can be done and
 1. **Proposed pages:** which of `/projects`, `/services`, `/contact`, `/blog` to build.
 2. **Home page:** keep the highlighted-JSON presentation, or redesign it.
 3. **Admin protection for `/admin/invoices`:** Cloudflare Access is known to work. Reusing the EmDash admin login would be tidier, but whether EmDash exposes its session to custom pages has not been checked.
-4. **`socialinks/`:** move to its own repo, or delete. Do not remove it without an answer.
+4. ~~**`socialinks/`:** move to its own repo, or delete.~~ Resolved: deleted on 2026-10-06 (still in git history).
 5. **Profile data:** current location, whether to keep `age`, current Discord handle, and which portfolio list is correct.
 6. **Business location:** confirm the business is US-based, since the separate-PayPal decision depends on it.
 7. **Venmo:** enable through PayPal or not.
