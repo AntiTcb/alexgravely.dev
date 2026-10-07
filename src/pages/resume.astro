@@ -1,0 +1,387 @@
+---
+import { getEmDashCollection } from "emdash";
+import Ticker from "../components/Ticker.svelte";
+import Base from "../layouts/Base.astro";
+import { getPortfolio, getProfile } from "../lib/content";
+import { earliest, formatMonthYear, formatRange, toDateOnly } from "../lib/dates";
+
+const DEVICON = "https://cdn.jsdelivr.net/gh/devicons/devicon/icons";
+
+const [profile, jobs, skills, education, portfolio, certifications, openSource] = await Promise.all([
+	getProfile(),
+	getEmDashCollection("jobs", { orderBy: { start_date: "desc" } }),
+	getEmDashCollection("skills", { orderBy: { sort_order: "asc", name: "asc" } }),
+	getEmDashCollection("education", { orderBy: { start_date: "desc" } }),
+	getPortfolio({ resume: true }),
+	getEmDashCollection("certifications", { orderBy: { sort_order: "asc" } }),
+	getEmDashCollection("open_source", { orderBy: { sort_order: "asc" } }),
+]);
+if (!profile) throw new Error('Missing profile entry (slug "main") in EmDash');
+const p = profile.data;
+
+const skillGroups = [
+	{ category: "language", heading: "Languages" },
+	{ category: "framework", heading: "Frameworks" },
+	{ category: "system", heading: "Systems" },
+]
+	.map((g) => ({ ...g, items: skills.entries.filter((s) => s.data.category === g.category) }))
+	.filter((g) => g.items.length > 0);
+
+const judgingSince = earliest(certifications.entries.map((c) => c.data.since));
+const openSourceSince = earliest(openSource.entries.map((o) => o.data.since));
+---
+
+<Base title="Résumé" description={`Résumé of ${p.name}`}>
+	<div id="resume">
+		<section id="profile">
+			<article>
+				<h2>{p.full_name || p.name}</h2>
+				{p.title && <h3>{p.title}</h3>}
+				<hr />
+				<div class="social">
+					{
+						p.github && (
+							<a href={p.github} rel="noreferrer" target="_blank" title="GitHub">
+								<img src={`${DEVICON}/github/github-original.svg`} alt="GitHub" width="28" height="28" />
+							</a>
+						)
+					}
+					{
+						p.linkedin && (
+							<a href={p.linkedin} rel="noreferrer" target="_blank" title="LinkedIn">
+								<img src={`${DEVICON}/linkedin/linkedin-original.svg`} alt="LinkedIn" width="28" height="28" />
+							</a>
+						)
+					}
+				</div>
+				{p.summary && <p>{p.summary}</p>}
+				{
+					p.career_start && (
+						<p id="programming_time">
+							Professional, freelance, and hobby developer for (approximately){" "}
+							<Ticker client:load since={toDateOnly(p.career_start)} />
+						</p>
+					)
+				}
+			</article>
+		</section>
+
+		{
+			jobs.entries.length > 0 && (
+				<section id="work">
+					<article>
+						<h2>Work Experience</h2>
+						{jobs.entries.map((job) => (
+							<div class="entry">
+								<h3>
+									{job.data.title}, {job.data.company}
+								</h3>
+								<p class="duration">{formatRange(job.data.start_date, job.data.end_date)}</p>
+								{job.data.company_description && (
+									<p class="description">{job.data.company_description}</p>
+								)}
+								{job.data.responsibilities && job.data.responsibilities.length > 0 && (
+									<ul class="bullets">
+										{job.data.responsibilities.map((r) => (
+											<li>{r.text}</li>
+										))}
+									</ul>
+								)}
+							</div>
+						))}
+					</article>
+				</section>
+			)
+		}
+
+		{
+			skillGroups.length > 0 && (
+				<section id="skills">
+					<article>
+						<h2>Skills</h2>
+						{skillGroups.map((group) => (
+							<>
+								<h3>{group.heading}</h3>
+								<ul class="skill-list">
+									{group.items.map((skill) => (
+										<li>
+											<figure>
+												{skill.data.icon_url && (
+													<img
+														src={skill.data.icon_url}
+														alt=""
+														title={skill.data.name}
+														width="75"
+														height="75"
+														loading="lazy"
+													/>
+												)}
+												<figcaption>{skill.data.name}</figcaption>
+											</figure>
+										</li>
+									))}
+								</ul>
+							</>
+						))}
+					</article>
+				</section>
+			)
+		}
+
+		{
+			education.entries.length > 0 && (
+				<section id="education">
+					<article>
+						<h2>Education</h2>
+						{education.entries.map((ed) => (
+							<div class="entry">
+								<h3>
+									{ed.data.program}, {ed.data.school}
+								</h3>
+								{ed.data.start_date && (
+									<p class="duration">
+										{formatRange(ed.data.start_date, ed.data.end_date)}
+										{!ed.data.completed && " (incomplete)"}
+									</p>
+								)}
+								{ed.data.coursework && ed.data.coursework.length > 0 && (
+									<p>Course Work - {ed.data.coursework.map((c) => c.text).join(", ")}</p>
+								)}
+							</div>
+						))}
+					</article>
+				</section>
+			)
+		}
+
+		<section id="interests">
+			<article>
+				<h2>Interests &amp; Side Projects</h2>
+
+				{
+					portfolio.length > 0 && (
+						<div class="entry">
+							<h3>{p.freelance_title || "Freelance"}</h3>
+							{p.freelance_since && <p class="duration">{formatRange(p.freelance_since)}</p>}
+							<ul class="projects">
+								{portfolio.map((site) => (
+									<li>
+										<h4>
+											<a href={site.data.url} target="_blank" rel="noreferrer">
+												{site.data.name}
+											</a>
+										</h4>
+										{site.data.highlights && site.data.highlights.length > 0 && (
+											<ul class="bullets">
+												{site.data.highlights.map((h) => (
+													<li>{h.text}</li>
+												))}
+											</ul>
+										)}
+									</li>
+								))}
+							</ul>
+						</div>
+					)
+				}
+
+				{
+					certifications.entries.length > 0 && (
+						<div class="entry">
+							<h3>TCG Judging</h3>
+							{judgingSince && <p class="duration">{formatRange(judgingSince)}</p>}
+							<ul class="projects">
+								{certifications.entries.map((cert) => (
+									<li>
+										<h4>{cert.data.area}</h4>
+										<ul class="bullets">
+											<li>
+												{cert.data.credential}
+												{cert.data.since && ` Since ${formatMonthYear(cert.data.since)}.`}
+												{cert.data.link_url && (
+													<>
+														{" "}
+														<a href={cert.data.link_url} target="_blank" rel="noreferrer">
+															{cert.data.link_label || cert.data.link_url}
+														</a>
+													</>
+												)}
+											</li>
+											{cert.data.notes?.map((n) => (
+												<li>{n.text}</li>
+											))}
+										</ul>
+									</li>
+								))}
+							</ul>
+						</div>
+					)
+				}
+
+				{
+					openSource.entries.length > 0 && (
+						<div class="entry">
+							<h3>Open Source Contributions</h3>
+							{openSourceSince && <p class="duration">{formatRange(openSourceSince)}</p>}
+							<ul class="projects">
+								{openSource.entries.map((os) => (
+									<li>
+										<h4>{os.data.role ? `${os.data.role}, ${os.data.project}` : os.data.project}</h4>
+										{os.data.description && os.data.description.length > 0 && (
+											<ul class="bullets">
+												{os.data.description.map((d) => (
+													<li>{d.text}</li>
+												))}
+											</ul>
+										)}
+									</li>
+								))}
+							</ul>
+						</div>
+					)
+				}
+			</article>
+		</section>
+
+		<button id="print" type="button" title="Print" aria-label="Print résumé">
+			<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
+				<path
+					d="M6 2h12v5H6zM4 8h16a2 2 0 0 1 2 2v6h-4v6H6v-6H2v-6a2 2 0 0 1 2-2zm4 8v4h8v-4zm10-5a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"
+				></path>
+			</svg>
+		</button>
+	</div>
+</Base>
+
+<script>
+	document.getElementById("print")?.addEventListener("click", () => window.print());
+</script>
+
+<style>
+	#resume {
+		margin-right: 1rem;
+	}
+	article {
+		margin: 1rem 0.5rem;
+		padding: 1rem;
+		border-radius: 0.5rem;
+		box-shadow: 0 1px 5px white;
+	}
+	article :where(h2, h3, h4, p, hr, li, ul, figure) {
+		margin: 0.25rem 0;
+	}
+	h3 {
+		font-size: 0.9rem;
+	}
+	hr {
+		margin: 0.5rem 0;
+	}
+	p {
+		font-size: 0.75rem;
+		color: var(--text-secondary);
+	}
+	.description {
+		font-size: 0.7rem;
+	}
+	.duration {
+		text-decoration: underline;
+	}
+	.social {
+		display: flex;
+		gap: 0.5rem;
+	}
+	.entry {
+		margin: 0.75rem 0.5rem;
+	}
+	.bullets,
+	.projects {
+		font-size: 0.7rem;
+	}
+	.bullets > li {
+		list-style: disc inside;
+		color: var(--text-secondary);
+	}
+	.projects .bullets > li {
+		list-style: none;
+		margin-left: 1rem;
+	}
+	h4 {
+		display: inline;
+		letter-spacing: 2px;
+	}
+	.projects > li {
+		list-style: disc inside;
+	}
+	.skill-list {
+		display: flex;
+		flex-wrap: wrap;
+		margin: 1rem 0;
+	}
+	.skill-list img {
+		padding: 0.125rem;
+	}
+	.skill-list figcaption {
+		display: none;
+	}
+	#print {
+		position: fixed;
+		right: 0;
+		bottom: 0;
+		margin: 0.25rem;
+		padding: 0.5rem;
+		border: none;
+		border-radius: 1rem;
+		background-color: rgba(0, 0, 0, 0.6);
+		color: var(--text-primary);
+		cursor: pointer;
+	}
+
+	@media print {
+		:global(nav),
+		img,
+		svg,
+		#programming_time,
+		#print {
+			display: none !important;
+		}
+		:global(*) {
+			color: black !important;
+			background-color: white !important;
+			text-shadow: none !important;
+			box-shadow: none !important;
+			font-family: serif !important;
+		}
+		:global(main) {
+			padding: 0;
+		}
+		a::after {
+			content: " (" attr(href) ")";
+			font-size: 10pt;
+		}
+		article {
+			margin: 0;
+			padding: 0 0 0.5rem;
+		}
+		#resume {
+			margin-right: 0;
+		}
+		.skill-list {
+			margin: 0;
+		}
+		.skill-list figure {
+			margin: 0.1rem 0;
+		}
+		.skill-list figcaption {
+			display: inline;
+			font-size: 12pt;
+		}
+		.skill-list li:not(:last-child) figcaption::after {
+			content: ", ";
+			padding-right: 5px;
+		}
+		.entry,
+		.projects > li {
+			break-inside: avoid;
+		}
+	}
+</style>

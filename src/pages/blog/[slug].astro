@@ -1,0 +1,57 @@
+---
+import { decodeSlug, getEmDashEntry } from "emdash";
+import { Image, PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+
+const slug = decodeSlug(Astro.params.slug);
+const { entry: post } = slug ? await getEmDashEntry("posts", slug) : { entry: null };
+if (!post) return Astro.rewrite("/404");
+const d = post.data;
+---
+
+<Base
+	title={d.title}
+	description={d.excerpt}
+	image={d.featured_image?.src}
+	content={{ collection: "posts", id: d.id, slug: d.slug }}
+	pageType="article"
+>
+	<article class="page">
+		<p class="back"><a href="/blog">&larr; All posts</a></p>
+		<h1 {...post.edit.title}>{d.title}</h1>
+		{
+			d.publishedAt && (
+				<time class="muted" datetime={d.publishedAt.toISOString()}>
+					{d.publishedAt.toLocaleDateString("en-US", { dateStyle: "long" })}
+				</time>
+			)
+		}
+		{
+			d.featured_image && (
+				<div class="hero" {...post.edit.featured_image}>
+					<Image image={d.featured_image} />
+				</div>
+			)
+		}
+		{
+			d.content && (
+				<div class="prose" {...post.edit.content}>
+					<PortableText value={d.content} />
+				</div>
+			)
+		}
+	</article>
+</Base>
+
+<style>
+	article > * + * {
+		margin-top: 0.6rem;
+	}
+	.back,
+	time {
+		font-size: 0.7rem;
+	}
+	.hero :global(img) {
+		border-radius: 0.5rem;
+	}
+</style>

@@ -1,0 +1,30 @@
+---
+// Page heading and intro from the EmDash "pages" collection, with a
+// fallback title if the entry is missing.
+import { PortableText } from "emdash/ui";
+import { getPageText } from "../lib/content";
+
+interface Props {
+	slug: string;
+	fallbackTitle: string;
+}
+
+const { slug, fallbackTitle } = Astro.props;
+const page = await getPageText(slug);
+---
+
+<header class="intro">
+	<h1>{page?.data.title ?? fallbackTitle}</h1>
+	{page?.data.intro && <div class="prose"><PortableText value={page.data.intro} /></div>}
+</header>
+
+<style>
+	.intro {
+		margin-bottom: 1.25rem;
+	}
+	.prose {
+		margin-top: 0.4rem;
+		color: var(--text-secondary);
+		font-size: 0.8rem;
+	}
+</style>

@@ -1,0 +1,60 @@
+---
+import Base from "../layouts/Base.astro";
+import { getPortfolio, getProfile } from "../lib/content";
+import { ageOn } from "../lib/dates";
+import { highlightJson } from "../lib/json-highlight";
+
+const [profile, portfolio] = await Promise.all([getProfile(), getPortfolio({ featured: true })]);
+if (!profile) throw new Error('Missing profile entry (slug "main") in EmDash');
+const p = profile.data;
+
+// Same shape (and alphabetical key order) as the old profile.json.
+const card = {
+	...(p.birth_date && { age: ageOn(p.birth_date) }),
+	contact_info: {
+		...(p.discord && { discord: p.discord }),
+		...(p.email && { email: p.email }),
+		...(p.github && { github: p.github }),
+		...(p.linkedin && { linkedIn: p.linkedin }),
+	},
+	...(p.tagline && { description: p.tagline }),
+	...(p.location && { location: p.location }),
+	name: p.name,
+	portfolio: portfolio.map((site) => site.data.url),
+	...(p.trivia != null && { trivia: p.trivia }),
+};
+---
+
+<Base description={`Portfolio of ${p.name}`}>
+	<article>
+		<pre data-language="json"><code set:html={highlightJson(card)} /></pre>
+	</article>
+</Base>
+
+<style>
+	/* Colours from highlight.js's stackoverflow-dark theme. */
+	pre {
+		padding: 1em;
+		border-radius: 0.5rem;
+		background: var(--code-bg);
+		color: #fff;
+		font-family: inherit;
+		font-size: clamp(0.75rem, -0.85rem + 8.333vw, 0.95rem);
+		white-space: break-spaces;
+		overflow-wrap: break-word;
+		text-shadow: none;
+	}
+	pre :global(.hljs-attr) {
+		color: #88aece;
+	}
+	pre :global(.hljs-string) {
+		color: #b5bd68;
+	}
+	pre :global(.hljs-number),
+	pre :global(.hljs-literal) {
+		color: #b5bd68;
+	}
+	pre :global(a) {
+		color: inherit;
+	}
+</style>

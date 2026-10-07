@@ -1,0 +1,73 @@
+---
+import { getEmDashCollection } from "emdash";
+import PageIntro from "../../components/PageIntro.astro";
+import Base from "../../layouts/Base.astro";
+import { getPageText } from "../../lib/content";
+
+const cursor = Astro.url.searchParams.get("cursor") || undefined;
+const [{ entries: posts, nextCursor }, page] = await Promise.all([
+	getEmDashCollection("posts", { orderBy: { published_at: "desc" }, limit: 20, cursor }),
+	getPageText("blog"),
+]);
+---
+
+<Base title={page?.data.title ?? "Blog"} description="Notes and write-ups by Alex Gravely.">
+	<div class="page">
+		<PageIntro slug="blog" fallbackTitle="Blog" />
+		{
+			posts.length === 0 ? (
+				<p class="muted empty">No posts yet.</p>
+			) : (
+				<ul class="card-list">
+					{posts.map((post) => (
+						<li class="card">
+							<h2>
+								<a href={`/blog/${post.id}`}>{post.data.title}</a>
+							</h2>
+							{post.data.publishedAt && (
+								<time class="muted" datetime={post.data.publishedAt.toISOString()}>
+									{post.data.publishedAt.toLocaleDateString("en-US", { dateStyle: "long" })}
+								</time>
+							)}
+							{post.data.excerpt && <p>{post.data.excerpt}</p>}
+						</li>
+					))}
+				</ul>
+			)
+		}
+		{
+			nextCursor && (
+				<p class="more">
+					<a href={`/blog?${new URLSearchParams({ cursor: nextCursor })}`}>Older posts &rarr;</a>
+				</p>
+			)
+		}
+	</div>
+</Base>
+
+<style>
+	.card {
+		display: grid;
+		gap: 0.35rem;
+		font-size: 0.8rem;
+	}
+	h2 {
+		font-size: 1rem;
+	}
+	h2 a {
+		text-decoration: none;
+	}
+	h2 a:hover {
+		text-decoration: underline;
+	}
+	time {
+		font-size: 0.65rem;
+	}
+	.empty,
+	.more {
+		font-size: 0.8rem;
+	}
+	.more {
+		margin-top: 1rem;
+	}
+</style>

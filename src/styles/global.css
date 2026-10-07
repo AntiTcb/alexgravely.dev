@@ -1,0 +1,125 @@
+:root {
+	--text-primary: #48c848;
+	--text-secondary: lightgreen;
+	--bg-primary: rgb(0, 0, 0);
+	--bg-secondary: rgb(50, 50, 50);
+	--code-bg: #1c1b1b;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	font-size: 16pt;
+	font-family: "Fira Mono", monospace;
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	min-height: 100vh;
+	background-color: var(--bg-secondary);
+	color: var(--text-primary);
+	text-shadow: 5px 3px 5px black;
+	line-height: 1.4;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-variant: small-caps;
+	line-height: 1.2;
+}
+
+a {
+	color: var(--text-primary);
+}
+
+img,
+svg {
+	display: block;
+	max-width: 100%;
+}
+
+button {
+	font: inherit;
+	color: inherit;
+}
+
+ul {
+	list-style: none;
+}
+
+/* Shared content styles */
+.page {
+	max-width: 48rem;
+	margin: 0 auto;
+}
+.card {
+	padding: 1rem;
+	border-radius: 0.5rem;
+	box-shadow: 0 1px 5px white;
+}
+.card-list {
+	display: grid;
+	gap: 1rem;
+}
+.muted {
+	color: var(--text-secondary);
+}
+.chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.3rem;
+}
+.chips li {
+	padding: 0.05rem 0.45rem;
+	border: 1px solid var(--text-secondary);
+	border-radius: 1rem;
+	font-size: 0.6rem;
+	color: var(--text-secondary);
+}
+.prose {
+	font-size: 0.8rem;
+}
+.prose :where(p, ul, ol, blockquote, pre, figure, h2, h3, h4) {
+	margin: 0.6rem 0;
+}
+.prose :where(ul) {
+	list-style: disc;
+	padding-left: 1.25rem;
+}
+.prose :where(ol) {
+	list-style: decimal;
+	padding-left: 1.25rem;
+}
+.prose :where(blockquote) {
+	padding-left: 0.75rem;
+	border-left: 3px solid var(--text-secondary);
+}
+.prose :where(pre) {
+	padding: 0.75rem;
+	overflow-x: auto;
+	border-radius: 0.35rem;
+	background: var(--code-bg);
+	text-shadow: none;
+}
+.prose :where(img) {
+	height: auto;
+	border-radius: 0.35rem;
+}
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}

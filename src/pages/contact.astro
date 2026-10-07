@@ -1,0 +1,115 @@
+---
+import { env } from "cloudflare:workers";
+import PageIntro from "../components/PageIntro.astro";
+import Base from "../layouts/Base.astro";
+import { LIMITS } from "../lib/contact";
+import { getPageText, getProfile } from "../lib/content";
+
+const [page, profile] = await Promise.all([getPageText("contact"), getProfile()]);
+const params = Astro.url.searchParams;
+const sent = params.has("sent");
+const error = params.get("error");
+const subject = (params.get("subject") ?? "").slice(0, LIMITS.subject);
+const turnstileKey = env.TURNSTILE_SITE_KEY;
+---
+
+<Base title={page?.data.title ?? "Contact"} description="Get in touch with Alex Gravely.">
+	<div class="page">
+		<PageIntro slug="contact" fallbackTitle="Contact" />
+
+		{
+			sent ? (
+				<p class="card notice" role="status" id="form">
+					Thanks, your message was sent. I'll reply by email.
+				</p>
+			) : (
+				<form method="post" action="/api/contact" class="card" id="form">
+					{error && (
+						<p class="error" role="alert">
+							{error}
+						</p>
+					)}
+					<label>
+						Name <input name="name" required maxlength={LIMITS.name} autocomplete="name" />
+					</label>
+					<label>
+						Email <input name="email" type="email" required maxlength={LIMITS.email} autocomplete="email" />
+					</label>
+					<label>
+						Subject <input name="subject" maxlength={LIMITS.subject} value={subject} />
+					</label>
+					<label>
+						Message <textarea name="message" required rows="7" maxlength={LIMITS.message} />
+					</label>
+					{/* Honeypot: hidden from people, filled in by naive bots. */}
+					<label class="visually-hidden" aria-hidden="true">
+						Website <input name="website" tabindex="-1" autocomplete="off" />
+					</label>
+					{turnstileKey && <div class="cf-turnstile" data-sitekey={turnstileKey} data-theme="dark" />}
+					<button type="submit">Send message</button>
+				</form>
+			)
+		}
+
+		{
+			profile?.data.email && (
+				<p class="direct muted">
+					Or email me directly at <a href={`mailto:${profile.data.email}`}>{profile.data.email}</a>.
+				</p>
+			)
+		}
+	</div>
+	{
+		turnstileKey && !sent && (
+			<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
+		)
+	}
+</Base>
+
+<style>
+	form {
+		display: grid;
+		gap: 0.75rem;
+		font-size: 0.8rem;
+	}
+	label {
+		display: grid;
+		gap: 0.25rem;
+	}
+	input,
+	textarea {
+		width: 100%;
+		padding: 0.45rem 0.55rem;
+		border: 1px solid #555;
+		border-radius: 0.3rem;
+		background: var(--bg-primary);
+		color: var(--text-primary);
+		font: inherit;
+	}
+	textarea {
+		resize: vertical;
+	}
+	button {
+		justify-self: start;
+		padding: 0.5rem 1.1rem;
+		border: 1px solid var(--text-primary);
+		border-radius: 0.3rem;
+		background: var(--bg-primary);
+		cursor: pointer;
+		text-shadow: none;
+	}
+	button:hover,
+	button:focus-visible {
+		background: #0d2a0d;
+	}
+	.error {
+		color: #ff8a80;
+	}
+	.notice {
+		font-size: 0.85rem;
+	}
+	.direct {
+		margin-top: 1rem;
+		font-size: 0.75rem;
+	}
+</style>

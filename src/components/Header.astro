@@ -1,0 +1,81 @@
+---
+import { getMenu } from "emdash";
+
+// Nav links come from the EmDash "primary" menu (Menus in the admin).
+const FALLBACK = [{ url: "/resume", label: "Résumé", target: undefined as string | undefined }];
+
+const menu = await getMenu("primary").catch(() => null);
+const links = menu?.items.length ? menu.items : FALLBACK;
+const path = Astro.url.pathname.replace(/\/$/, "") || "/";
+const isCurrent = (href: string) => href !== "/" && (path === href || path.startsWith(`${href}/`));
+---
+
+<nav>
+	<a class="brand" href="/" aria-current={path === "/" ? "page" : undefined}>AlexGravely.Dev</a>
+	<ul>
+		{
+			links.map((link) => (
+				<li>
+					<a
+						href={link.url}
+						target={link.target}
+						rel={link.target === "_blank" ? "noopener noreferrer" : undefined}
+						aria-current={isCurrent(link.url) ? "page" : undefined}
+					>
+						{link.label}
+					</a>
+				</li>
+			))
+		}
+	</ul>
+</nav>
+
+<style>
+	nav {
+		position: sticky;
+		top: 0;
+		z-index: 1;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: center;
+		gap: 0.25rem 1rem;
+		padding: 0.1rem 0.5rem;
+		background-color: var(--bg-primary);
+	}
+	a {
+		text-decoration: none;
+		transition: color 0.25s ease;
+	}
+	a:hover,
+	a[aria-current="page"] {
+		color: var(--text-secondary);
+	}
+	a[aria-current="page"] {
+		text-decoration: underline;
+	}
+	.brand {
+		font-size: 1.25rem;
+	}
+	ul {
+		display: flex;
+		flex-wrap: wrap;
+		font-size: clamp(0.7rem, -0.85rem + 8.333vw, 0.9rem);
+	}
+	li + li {
+		border-left: 1.5px solid var(--text-primary);
+		padding-left: 0.5rem;
+		margin-left: 0.5rem;
+	}
+	@media (max-width: 599px) {
+		nav {
+			justify-content: center;
+		}
+		.brand {
+			font-size: inherit;
+		}
+		ul {
+			justify-content: center;
+		}
+	}
+</style>

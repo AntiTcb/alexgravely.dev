@@ -1,0 +1,25 @@
+---
+// Google Analytics 4. Only loaded in production builds so local
+// development doesn't record page views.
+const MEASUREMENT_ID = "G-M1CN4YR1VL";
+---
+
+{
+	import.meta.env.PROD && (
+		<>
+			<script
+				is:inline
+				async
+				src={`https://www.googletagmanager.com/gtag/js?id=${MEASUREMENT_ID}`}
+			/>
+			<script is:inline define:vars={{ MEASUREMENT_ID }}>
+				window.dataLayer = window.dataLayer || [];
+				function gtag() {
+					dataLayer.push(arguments);
+				}
+				gtag("js", new Date());
+				gtag("config", MEASUREMENT_ID);
+			</script>
+		</>
+	)
+}
