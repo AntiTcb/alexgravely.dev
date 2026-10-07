@@ -64,6 +64,17 @@ Clients pay invoices by card (Stripe Checkout) or PayPal/Venmo (PayPal buttons).
 
 Invoice tables are plain D1 (`migrations/`), not EmDash content. Code is in `src/lib/invoices/`. Emails (invoice link, receipt, and notices to `NOTIFY_EMAIL`) go out through Cloudflare Email Sending via the `EMAIL` binding; locally, Wrangler writes them to `.wrangler/tmp/email/` instead of sending.
 
+### Deploying
+
+The Worker is served at `astro.alexgravely.dev` (a custom domain in `wrangler.jsonc`) until the primary domain moves over. It is about 4.2 MiB gzipped, over the Workers Free limit of 3 MiB, so it needs the Workers Paid plan.
+
+First deploy, in order:
+
+1. `pnpm deploy`: builds, then creates the D1 database, R2 bucket and session KV namespace if they don't exist, deploys, and adds the `astro.alexgravely.dev` DNS record.
+2. `pnpm db:migrate:remote`: creates the invoice and contact tables.
+3. Open `https://astro.alexgravely.dev/_emdash/admin` straight away and finish the setup wizard. Until it's finished, whoever opens it first becomes the admin.
+4. Set the secrets (below) and run `pnpm deploy` again.
+
 ### Before going live
 
 1. Onboard the sender domain for `EMAIL_FROM` in Cloudflare (Email Service → Email Sending).

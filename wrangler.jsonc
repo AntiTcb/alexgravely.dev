@@ -4,6 +4,10 @@
 	"main": "./src/worker.ts",
 	"compatibility_date": "2026-10-01",
 	"compatibility_flags": ["nodejs_compat"],
+	// Staging hostname while the old site still serves alexgravely.dev.
+	// Needs the alexgravely.dev zone on the same Cloudflare account; Wrangler
+	// creates the DNS record and certificate on deploy.
+	"routes": [{ "pattern": "astro.alexgravely.dev", "custom_domain": true }],
 	// Shared by EmDash and the invoice tables (see docs/rebuild-plan.md, section 6).
 	// `database_id` is filled in when the D1 database is created at deploy time.
 	"d1_databases": [

@@ -6,7 +6,8 @@ import { defineConfig } from "astro/config";
 import emdash from "emdash/astro";
 
 export default defineConfig({
-	site: "https://alexgravely.dev",
+	// Switch to https://alexgravely.dev when the primary domain moves over.
+	site: "https://astro.alexgravely.dev",
 	// EmDash pages must be server-rendered.
 	output: "server",
 	adapter: cloudflare(),
